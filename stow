@@ -1,0 +1,58 @@
+#!/usr/bin/python
+#
+# Python interface to stow
+# TODO:
+#  - add option to force (ie unlink existing first)
+#  - improve error handling (eg file exists)
+#  - add option to backup a file before symlinking
+
+from ansible.module_utils.basic import *
+
+import subprocess as sp
+
+
+def stow_dir(stowdir, name, target=None):
+    "Stow name (in stowdir) to target"
+    args = ["stow", "-v", "-d", stowdir]
+
+    if target:
+        args += ["-t", target]
+
+    args += [name]
+
+    try:
+        stdout = sp.check_output(args, stderr=sp.STDOUT)
+    except CalledProcessError, e:
+        changed = False
+        exitcode = e.returncode
+        stdout = e.output
+    else:
+        changed = "LINK" in stdout
+        exitcode = 0
+
+    return changed, stdout, exitcode
+
+
+def main():
+    """Ansible entrypoint"""
+
+    args = {
+        "dir": {"required": True, "type": "str"},
+        "package": {"required": False, "type": "str"},
+        "target": {"required": False, "type": "str", "default": "~"},
+    }
+
+    module = AnsibleModule(argument_spec=args)
+
+    # Do the stowage!
+    has_changed, exitcode, stdout = stow_dir(module.params['dir'],
+                                             module.params["package"],
+                                             module.params["target"])
+
+    result = {"output": stdout, "exitcode": exitcode}
+
+    module.exit_json(changed=has_changed, meta=result)
+
+
+if __name__ == '__main__':
+    main()
