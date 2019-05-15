@@ -75,6 +75,7 @@ $ (sudo) mv stow /usr/share/ansible
       <td><code>state</code></td>
       <td><strong>yes</strong></td>
       <td>
+        <strong>Choices:</strong><br>
         <ul>
           <li>absent</li>
           <li>latest</li>
