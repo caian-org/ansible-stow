@@ -62,7 +62,7 @@ $ (sudo) mv stow /usr/share/ansible
     <tr>
       <td><code>target</code></td>
       <td><strong>no</strong></td>
-      <td><strong>Default:</strong> <code>~</code></td>
+      <td><strong>Default:</strong> <code>~</code> (user's home directory)</td>
       <td>Path of target directory to perform</td>
     </tr>
     <tr>
@@ -75,7 +75,6 @@ $ (sudo) mv stow /usr/share/ansible
       <td><code>state</code></td>
       <td><strong>yes</strong></td>
       <td>
-        <strong>Choices:</strong><br>
         <ul>
           <li>absent</li>
           <li>latest</li>
@@ -86,8 +85,8 @@ $ (sudo) mv stow /usr/share/ansible
       <td>
         <ul>
           <li>Unstow / delete the package. Equivalent to <code>stow --delete</code>.</li>
-          <li>First unstow a package, then stow again. Equivalent to <code>stow --restow</code></li>
-          <li>Stow a package. Equivalent to <code>stow --stow</code></li>
+          <li>First unstow a package, then stow again. Equivalent to <code>stow --restow</code>.</li>
+          <li>Stow a package. Equivalent to <code>stow --stow</code>.</li>
           <li>Stow a package and overwrite the file if any conflict is found. <strong>THIS CAN LEAD TO DATA LOSS!</strong> Use wisely.</li>
         </ul>
       </td>
