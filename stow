@@ -34,8 +34,8 @@ def stow_in_path(module):
     return rc == 0
 
 
-def stow_has_conflicts(module, flags):
-    cmd = '{} --no'.format(flags)
+def stow_has_conflicts(module, package, cmd):
+    cmd = '{} --no'.format(cmd)
 
     rc, _, stderr = module.run_command(cmd)
 
@@ -56,7 +56,8 @@ def stow_has_conflicts(module, flags):
     has_conflicts = (rc != 0)
     if has_conflicts:
         msg = 'unable to stow package "{0}" to "{1}"; conflicted files: {2}'.format(
-            module.params['package'], module.params['dir'],
+            package,
+            module.params['target'],
             ', '.join('"{}"'.format(f) for f in conflicts))
 
     return has_conflicts, dict(conflicts=conflicts, message=msg)
@@ -79,7 +80,7 @@ def stow(module, package, state):
         module.params['target'],
         module.params['dir'])
 
-    has_conflicts, res = stow_has_conflicts(module, cmd)
+    has_conflicts, res = stow_has_conflicts(module, package, cmd)
     if has_conflicts:
         if state != 'supress':
             return True, res
@@ -101,7 +102,7 @@ def stow(module, package, state):
 def main():
     module = AnsibleModule(argument_spec={
         'dir':     {'required': True, 'type': 'str'},
-        'package': {'required': True, 'type': 'str'},
+        'package': {'required': True, 'type': 'list'},
         'target':  {'required': False, 'type': 'str', 'default': '~'},
         'state':   {
             'required': True, 'type': 'str',
