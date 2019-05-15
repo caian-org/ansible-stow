@@ -19,6 +19,7 @@
 # <http://creativecommons.org/publicdomain/zero/1.0/>
 
 import os.path as path
+from os import environ
 from ansible.module_utils.basic import *
 
 
@@ -103,7 +104,7 @@ def main():
     module = AnsibleModule(argument_spec={
         'dir':     {'required': True, 'type': 'str'},
         'package': {'required': True, 'type': 'list'},
-        'target':  {'required': False, 'type': 'str', 'default': '~'},
+        'target':  {'required': False, 'type': 'str', 'default': environ.get('HOME')},
         'state':   {
             'required': True, 'type': 'str',
             'choices': ['absent', 'present', 'latest', 'supress']
