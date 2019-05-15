@@ -83,12 +83,10 @@ $ (sudo) mv stow /usr/share/ansible
         </ul>
       </td>
       <td>
-        <ul>
-          <li>Unstow / delete the package. Equivalent to <code>stow --delete</code>.</li>
-          <li>First unstow a package, then stow again. Equivalent to <code>stow --restow</code>.</li>
-          <li>Stow a package. Equivalent to <code>stow --stow</code>.</li>
-          <li>Stow a package and overwrite the file if any conflict is found. <strong>THIS CAN LEAD TO DATA LOSS!</strong> Use wisely.</li>
-        </ul>
+        <strong>Absent:</strong> unstow / delete the package. Equivalent to <code>stow --delete</code>.<br>
+        <strong>Latest:</strong>First unstow a package, then stow again. Equivalent to <code>stow --restow</code>.<br>
+        <strong>Present:</strong>Stow a package. Equivalent to <code>stow --stow</code>.<br>
+        <strong>Supress:</strong>Stow a package and overwrite the file if any conflict is found. <strong>THIS CAN LEAD TO DATA LOSS!</strong> Use wisely.<br>
       </td>
     </tr>
   </tbody>
