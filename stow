@@ -1,57 +1,129 @@
-#!/usr/bin/python
-#
-# Python interface to stow
-# TODO:
-#  - add option to force (ie unlink existing first)
-#  - improve error handling (eg file exists)
-#  - add option to backup a file before symlinking
+#!/usr/bin/python3
 
+# The person who associated a work with this deed has dedicated the work to the
+# public domain by waiving all of his or her rights to the work worldwide under
+# copyright law, including all related and neighboring rights, to the extent
+# allowed by law.
+#
+# You can copy, modify, distribute and perform the work, even for commercial
+# purposes, all without asking permission.
+#
+# AFFIRMER OFFERS THE WORK AS-IS AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+# ANY KIND CONCERNING THE WORK, EXPRESS, IMPLIED, STATUTORY OR OTHERWISE,
+# INCLUDING WITHOUT LIMITATION WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE, NON INFRINGEMENT, OR THE ABSENCE OF LATENT OR OTHER
+# DEFECTS, ACCURACY, OR THE PRESENT OR ABSENCE OF ERRORS, WHETHER OR NOT
+# DISCOVERABLE, ALL TO THE GREATEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW.
+#
+# For more information, please see
+# <http://creativecommons.org/publicdomain/zero/1.0/>
+
+import os.path as path
 from ansible.module_utils.basic import *
 
-import subprocess as sp
+
+def purge_conflicts(conflicted_files):
+    for f in conflicted_files:
+        pass
+
+    return False, dict(message=None)
 
 
-def stow_dir(stowdir, name, target=None):
-    "Stow name (in stowdir) to target"
-    args = ["stow", "-v", "-d", stowdir]
+def stow_in_path(module):
+    rc, _, _ = module.run_command('which stow', check_rc=False)
+    return rc == 0
 
-    if target:
-        args += ["-t", target]
 
-    args += [name]
+def stow_has_conflicts(module, flags):
+    cmd = '{} --no'.format(flags)
 
-    try:
-        stdout = sp.check_output(args, stderr=sp.STDOUT)
-    except CalledProcessError, e:
-        changed = False
-        exitcode = e.returncode
-        stdout = e.output
-    else:
-        changed = "LINK" in stdout
-        exitcode = 0
+    rc, _, stderr = module.run_command(cmd)
 
-    return changed, stdout, exitcode
+    msg = None
+    conflicts = []
+
+    if stderr:
+        stderr_lines = stderr.split('\n')
+
+        for s in stderr_lines:
+            if '* existing target is neither' in s:
+                c = s.split(':')
+                c = c[1].strip()
+                c = path.join(module.params['target'], c)
+
+                conflicts.append(c)
+
+    has_conflicts = (rc != 0)
+    if has_conflicts:
+        msg = 'unable to stow package "{0}" to "{1}"; conflicted files: {2}'.format(
+            module.params['package'], module.params['dir'],
+            ', '.join('"{}"'.format(f) for f in conflicts))
+
+    return has_conflicts, dict(conflicts=conflicts, message=msg)
+
+
+def stow(module, state):
+    flag = ''
+    if state == 'present' or state == 'supress':
+        flag = '--stow'
+
+    elif state == 'absent':
+        flag = '--delete'
+
+    elif state == 'latest':
+        flag = '--restow'
+
+    cmd = 'stow {0} {1} --target={2} --dir={3} --verbose'.format(
+        flag,
+        module.params['package'],
+        module.params['target'],
+        module.params['dir'])
+
+    has_conflicts, res = stow_has_conflicts(module, cmd)
+    if has_conflicts:
+        if state != 'supress':
+            return True, res
+        
+        err = purge_conflicts(res['conflicts'])
+        if err:
+            return True, res
+
+    rc, stdout, stderr = module.run_command(cmd)
+    if rc != 0:
+        msg = 'execution of command "{0}" failed with error code {1}; output: "{2}"'.format(
+            cmd, rc, stderr)
+
+        return True, dict(message=msg)
+
+    return False, dict(changed=(stderr != ''))
 
 
 def main():
-    """Ansible entrypoint"""
+    module = AnsibleModule(argument_spec={
+        'dir':     {'required': True, 'type': 'str'},
+        'package': {'required': True, 'type': 'str'},
+        'target':  {'required': False, 'type': 'str', 'default': '~'},
+        'state':   {
+            'required': True, 'type': 'str',
+            'choices': ['absent', 'present', 'latest', 'supress']
+        },
+    })
 
-    args = {
-        "dir": {"required": True, "type": "str"},
-        "package": {"required": False, "type": "str"},
-        "target": {"required": False, "type": "str", "default": "~"},
-    }
+    if not stow_in_path(module):
+        module.fail_json(msg='unable to find stow')
 
-    module = AnsibleModule(argument_spec=args)
+    has_changed = False
+    state = module.params['state']
 
-    # Do the stowage!
-    has_changed, exitcode, stdout = stow_dir(module.params['dir'],
-                                             module.params["package"],
-                                             module.params["target"])
+    packages = list(module.params['package'])
+    for package in packages:
+        err, ret = stow(module, state)
+        if err:
+            module.fail_json(msg=ret['message'])
 
-    result = {"output": stdout, "exitcode": exitcode}
+        has_changed = has_changed or ret['changed']
 
-    module.exit_json(changed=has_changed, meta=result)
+    module.exit_json(changed=has_changed)
 
 
 if __name__ == '__main__':
