@@ -57,24 +57,25 @@ $ (sudo) mv stow /usr/share/ansible
       <td><code>package</code></td>
       <td><strong>yes</strong></td>
       <td></td>
-      <td>Lorem</td>
+      <td>Name of the Stow package</td>
     </tr>
     <tr>
       <td><code>target</code></td>
       <td><strong>no</strong></td>
-      <td></td>
-      <td>Ipsum</td>
+      <td><strong>Default:</strong> <code>~</code></td>
+      <td>Path of target directory to perform</td>
     </tr>
     <tr>
       <td><code>dir</code></td>
       <td><strong>yes</strong></td>
       <td></td>
-      <td>Sit</td>
+      <td>Path of the Stow directory</td>
     </tr>
     <tr>
       <td><code>state</code></td>
       <td><strong>yes</strong></td>
       <td>
+        <strong>Choices:</strong><br>
         <ul>
           <li>absent</li>
           <li>latest</li>
@@ -82,7 +83,14 @@ $ (sudo) mv stow /usr/share/ansible
           <li>supress</li>
         </ul>
       </td>
-      <td>Dolor</td>
+      <td>
+        <ul>
+          <li>Unstow / delete the package. Equivalent to <code>stow --delete</code>.</li>
+          <li>First unstow a package, then stow again. Equivalent to <code>stow --restow</code></li>
+          <li>Stow a package. Equivalent to <code>stow --stow</code></li>
+          <li>Stow a package and overwrite the file if any conflict is found. <strong>THIS CAN LEAD TO DATA LOSS!</strong> Use wisely.</li>
+        </ul>
+      </td>
     </tr>
   </tbody>
 </table>
