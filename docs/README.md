@@ -10,6 +10,18 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 [lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?style=for-the-badge
 [lgtm-url]: https://lgtm.com/projects/g/caian-org/ansible-stow/context:python
 
+
+## Table of Contents
+
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Options](#options)
+  - [Examples](#examples)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
+
+
 ## Dependencies
 
 To use `ansible-stow`, the managed node should have `stow` installed.
