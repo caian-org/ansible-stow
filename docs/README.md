@@ -9,9 +9,10 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 
 ## Dependencies
 
-To use `ansible-stow`, the managed node should have `stow` installed. GNU Stow
-is widely available in all major distributions and can be installed with
-`apt-get`, `pacman`, `yum` etc.
+To use `ansible-stow`, the managed node should have `stow` installed.
+
+GNU Stow is widely available in all major distributions and can be installed
+with `apt-get`, `pacman`, `yum` etc.
 
 
 ## Installation
@@ -20,7 +21,7 @@ Download the module and move it into your global Ansible library or into the
 library directory alongside your top-level playbook. E.g.:
 
 ```sh
-$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/master/stow
+$ wget https://git.io/fjlZ4
 $ (sudo) mv stow /usr/share/ansible
 ```
 
@@ -37,28 +38,24 @@ $ (sudo) mv stow /usr/share/ansible
       <th align="center">Choices / Defaults</th>
       <th align="center">Comments</th>
     </tr>
-
     <tr>
       <td align="center"><code>package</code></td>
       <td align="center"><strong>yes</strong></td>
       <td></td>
       <td>Lorem</td>
     </tr>
-
     <tr>
       <td align="center"><code>target</code></td>
       <td align="center"><strong>no</strong></td>
       <td></td>
       <td>Ipsum</td>
     </tr>
-
     <tr>
       <td align="center"><code>dir</code></td>
       <td align="center"><strong>yes</strong></td>
       <td></td>
       <td>Sit</td>
     </tr>
-
     <tr>
       <td align="center"><code>state</code></td>
       <td align="center"><strong>yes</strong></td>
