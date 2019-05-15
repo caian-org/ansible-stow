@@ -62,7 +62,7 @@ def stow_has_conflicts(module, flags):
     return has_conflicts, dict(conflicts=conflicts, message=msg)
 
 
-def stow(module, state):
+def stow(module, package, state):
     flag = ''
     if state == 'present' or state == 'supress':
         flag = '--stow'
@@ -75,7 +75,7 @@ def stow(module, state):
 
     cmd = 'stow {0} {1} --target={2} --dir={3} --verbose'.format(
         flag,
-        module.params['package'],
+        package,
         module.params['target'],
         module.params['dir'])
 
@@ -117,7 +117,7 @@ def main():
 
     packages = list(module.params['package'])
     for package in packages:
-        err, ret = stow(module, state)
+        err, ret = stow(module, package, state)
         if err:
             module.fail_json(msg=ret['message'])
 
