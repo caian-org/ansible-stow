@@ -1,18 +1,21 @@
 # ansible-stow
 
-An Ansible module that interacts with [GNU Stow][stow] packages.
-
 <img src="docs/logo.png" height="300px" align="right"/>
 
-[stow]: https://www.gnu.org/software/stow
+An Ansible module that interacts with [GNU Stow][stow] packages.
 
+[![Code Quality][lgtm-shield]][lgtm-url]
+
+[stow]: https://www.gnu.org/software/stow
+[lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?style=for-the-badge
+[lgtm-url]: https://lgtm.com/projects/g/caian-org/ansible-stow/context:python
 
 ## Dependencies
 
 To use `ansible-stow`, the managed node should have `stow` installed.
 
-GNU Stow is widely available in all major distributions and can be installed
-with `apt-get`, `pacman`, `yum` etc.
+__GNU Stow__ is widely available in all major distributions and can be
+installed with `apt-get`, `pacman`, `yum` etc.
 
 
 ## Installation
@@ -73,7 +76,7 @@ $ (sudo) mv stow /usr/share/ansible
 </table>
 
 
-## Examples
+### Examples
 
 ```yaml
 
@@ -98,6 +101,18 @@ $ (sudo) mv stow /usr/share/ansible
     dir: /media/user/dots
 
 ```
+
+
+## License
+
+To the extent possible under law, [Caian Rais Ertl][me] has waived all
+copyright and related or neighboring rights to this work.
+
+[![License][cc-shield]][cc-url]
+
+[me]: https://github.com/caiertl
+[cc-shield]: https://forthebadge.com/images/badges/cc-0.svg
+[cc-url]: http://creativecommons.org/publicdomain/zero/1.0
 
 
 ## Acknowledgements
