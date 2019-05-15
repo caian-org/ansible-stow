@@ -39,26 +39,26 @@ $ (sudo) mv stow /usr/share/ansible
       <th align="center">Comments</th>
     </tr>
     <tr>
-      <td align="center"><code>package</code></td>
-      <td align="center"><strong>yes</strong></td>
+      <td><code>package</code></td>
+      <td><strong>yes</strong></td>
       <td></td>
       <td>Lorem</td>
     </tr>
     <tr>
-      <td align="center"><code>target</code></td>
-      <td align="center"><strong>no</strong></td>
+      <td><code>target</code></td>
+      <td><strong>no</strong></td>
       <td></td>
       <td>Ipsum</td>
     </tr>
     <tr>
-      <td align="center"><code>dir</code></td>
-      <td align="center"><strong>yes</strong></td>
+      <td><code>dir</code></td>
+      <td><strong>yes</strong></td>
       <td></td>
       <td>Sit</td>
     </tr>
     <tr>
-      <td align="center"><code>state</code></td>
-      <td align="center"><strong>yes</strong></td>
+      <td><code>state</code></td>
+      <td><strong>yes</strong></td>
       <td>
         <ul>
           <li>absent</li>
