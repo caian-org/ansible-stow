@@ -149,7 +149,7 @@ copyright and related or neighboring rights to this work.
 
 Original implementation:
 
-- [`stow.py`][stow] by [Ric da Silva][rsilva]
+- [`stow.py`][stowpy] by [Ric da Silva][rsilva]
 
-[stow]: https://github.com/rmhsilva/dotfiles/blob/master/library/stow.py
+[stowpy]: https://github.com/rmhsilva/dotfiles/blob/master/library/stow.py
 [rsilva]: https://github.com/rmhsilva
