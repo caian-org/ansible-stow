@@ -1,0 +1,10 @@
+dist: xenial
+language: generic
+
+install:
+  - sudo apt-get install -y figlet
+  - pip install ansible
+
+script:
+  - shellcheck tests/test.sh
+  - ./tests/test.sh
