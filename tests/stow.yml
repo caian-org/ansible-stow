@@ -1,8 +1,9 @@
 ---
 
 - name: ansible-stow test
+  hosts: all
   tasks:
-    - name: '[{{ state }}] stow package "foo"'
+    - name: '({{ state }}) stow package "foo"'
       stow:
         state: '{{ state }}'
         package: foo
