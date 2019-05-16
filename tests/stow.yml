@@ -1,0 +1,7 @@
+---
+
+- name: '[{{ state }}] Stow package "foo"'
+  stow:
+    state: '{{ state }}'
+    package: foo
+    dir: '$HOME/package'
