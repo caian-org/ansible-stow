@@ -1,7 +1,9 @@
 ---
 
-- name: '[{{ state }}] Stow package "foo"'
-  stow:
-    state: '{{ state }}'
-    package: foo
-    dir: '$HOME/package'
+- name: ansible-stow test
+  tasks:
+    - name: '[{{ state }}] stow package "foo"'
+        stow:
+          state: '{{ state }}'
+          package: foo
+          dir: '$HOME/package'
