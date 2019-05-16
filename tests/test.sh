@@ -6,14 +6,6 @@ run_playbook() {
     ansible-playbook -i hosts stow.yml --extra-vars "state=$1" -vvv
 }
 
-test_target_file() {
-    # test if the target file is a symbolic link
-    test -h "$HOME/.config/foo/bar" || exit 1
-
-    # test the file content
-    grep -Fxq bar "$HOME/.config/foo/bar" || exit 1
-}
-
 # create the library directory and copy the module
 mkdir library
 cp ../stow library
@@ -25,15 +17,18 @@ mv package ~
 figlet "state: present"
 run_playbook "present"
 
-# test
-test_target_file
+# test if the target file is a symbolic link
+test -h "$HOME/.config/foo" || exit 1
+
+# test the file content
+grep -Fxq bar "$HOME/.config/foo/bar" || exit 1
 
 # run the playbook and unstow the package
 figlet "state: absent"
 run_playbook "absent"
 
 # test if the target symlink were removed
-test -h "$HOME/.config/foo/bar" && exit 1
+test -h "$HOME/.config/foo" && exit 1
 
 # stow ,restow, unstow
 figlet "state: latest"
@@ -51,4 +46,6 @@ run_playbook "present" && exit 1
 
 # stow (and override); test again
 run_playbook "supress"
-test_target_file
+
+# test the file content (again)
+grep -Fxq bar "$HOME/.config/foo/bar" || exit 1
