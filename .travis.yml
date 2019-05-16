@@ -9,4 +9,4 @@ install:
 
 script:
   - shellcheck tests/test.sh
-  - ./tests/test.sh
+  - cd tests && ./test.sh
