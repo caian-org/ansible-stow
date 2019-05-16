@@ -16,12 +16,10 @@ test_target_file() {
 
 # create the library directory and copy the module
 mkdir library
-cp ../stow .
+cp ../stow library
 
 # move the package to the home directory
 mv package ~
-
-ls -lash
 
 # run the playbook and stow the package
 figlet "state: present"
