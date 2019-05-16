@@ -1,8 +1,10 @@
 dist: xenial
-language: generic
+language: python
+
+python: "3.7"
 
 install:
-  - sudo apt-get install -y figlet
+  - sudo apt-get install -y figlet shellcheck
   - pip install ansible
 
 script:
