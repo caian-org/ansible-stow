@@ -21,6 +21,8 @@ cp ../stow .
 # move the package to the home directory
 mv package ~
 
+ls -lash
+
 # run the playbook and stow the package
 figlet "state: present"
 run_playbook "present"
