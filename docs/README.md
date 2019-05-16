@@ -81,7 +81,7 @@ $ (sudo) mv stow /usr/share/ansible
           <li>absent</li>
           <li>latest</li>
           <li>present</li>
-          <li>supress</li>bla
+          <li>supress</li>
         </ul>
       </td>
       <td>
@@ -90,7 +90,7 @@ $ (sudo) mv stow /usr/share/ansible
           <li><strong>latest:</strong> first unstow a package, then stow again. Equivalent to <code>stow --restow</code>.</li>
           <li><strong>present:</strong> stow a package. Equivalent to <code>stow --stow</code>.</li>
           <li><strong>supress:</strong> stow a package and overwrite the file if any conflict is found. <strong>THIS CAN LEAD TO DATA LOSS!</strong> Use wisely.</li>
-	</ul>
+	      </ul>
       </td>
     </tr>
   </tbody>
