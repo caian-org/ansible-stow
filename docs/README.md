@@ -4,11 +4,18 @@
 
 An Ansible module that interacts with [GNU Stow][stow] packages.
 
-[![Code Quality][lgtm-shield]][lgtm-url]
+[![Build Status][travis-shield]][travis-url] [![Code Quality][lgtm-shield]][lgtm-url] [![GitHub tag][tag-shield]][tag-url]
 
 [stow]: https://www.gnu.org/software/stow
+
+[travis-shield]: https://img.shields.io/travis/caian-org/ansible-stow.svg?style=for-the-badge
+[travis-url]: https://travis-ci.org/caian-org/ansible-stow
+
 [lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?style=for-the-badge
 [lgtm-url]: https://lgtm.com/projects/g/caian-org/ansible-stow/context:python
+
+[tag-shield]: https://img.shields.io/github/tag/caian-org/ansible-stow.svg?style=for-the-badge
+[tag-url]: https://github.com/caian-org/ansible-stow/releases
 
 
 ## Table of Contents
