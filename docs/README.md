@@ -18,6 +18,7 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 - [Usage](#usage)
   - [Options](#options)
   - [Examples](#examples)
+  - [Caveats](#caveats)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
@@ -62,7 +63,7 @@ $ (sudo) mv stow /usr/share/ansible
     <tr>
       <td><code>target</code></td>
       <td><strong>no</strong></td>
-      <td><strong>Default:</strong> <code>~</code> (user's home directory)</td>
+      <td><strong>Default:</strong> user's home directory</td>
       <td>Path of target directory to perform</td>
     </tr>
     <tr>
@@ -80,7 +81,7 @@ $ (sudo) mv stow /usr/share/ansible
           <li>absent</li>
           <li>latest</li>
           <li>present</li>
-          <li>supress</li>
+          <li>supress</li>bla
         </ul>
       </td>
       <td>
@@ -105,22 +106,31 @@ $ (sudo) mv stow /usr/share/ansible
     state: present
     package: zsh
     dir: /media/user/dots
-    target: ~
+    target: '$HOME'
 
 # remove package "tmux"
 - stow:
     state: absent
     package: tmux
     dir: /media/user/dots
-    target: ~
 
-# in case of conflict, overwrite file with symlink
+# in case of conflict, overwrite the file with a symlink
 - stow:
     state: supress
     package: vim
     dir: /media/user/dots
 
 ```
+
+### Caveats
+
+- If the package target already exists on the node filesystem as a file or a
+  symbolic link, the `supress` state will delete/unlink the target and then
+  stow the package.
+- If the package target already exists and is a directory, `ansible-stow` will
+  fail -- even using the `supress` state. This is an implementation decision.
+- Stow cannot handle the tilde expansion (`~`). Use the `$HOME` environment
+  variable instead or Ansible's template function `lookup`.
 
 
 ## License
