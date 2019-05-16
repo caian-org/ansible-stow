@@ -1,70 +1,168 @@
 #!/usr/bin/python3
 
-# The person who associated a work with this deed has dedicated the work to the
-# public domain by waiving all of his or her rights to the work worldwide under
-# copyright law, including all related and neighboring rights, to the extent
-# allowed by law.
-#
-# You can copy, modify, distribute and perform the work, even for commercial
-# purposes, all without asking permission.
-#
-# AFFIRMER OFFERS THE WORK AS-IS AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
-# ANY KIND CONCERNING THE WORK, EXPRESS, IMPLIED, STATUTORY OR OTHERWISE,
-# INCLUDING WITHOUT LIMITATION WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS
-# FOR A PARTICULAR PURPOSE, NON INFRINGEMENT, OR THE ABSENCE OF LATENT OR OTHER
-# DEFECTS, ACCURACY, OR THE PRESENT OR ABSENCE OF ERRORS, WHETHER OR NOT
-# DISCOVERABLE, ALL TO THE GREATEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW.
-#
-# For more information, please see
-# <http://creativecommons.org/publicdomain/zero/1.0/>
+'''
+     author : Caian R. Ertl <hi@caian.org>
+       code : github.com/caian-org/ansible-stow
+    project : ansible-stow
+description : An Ansible module that interacts with GNU Stow packages
+    license : CC0 (Public Domain)
 
-import os.path as path
-from os import environ
+The person who associated a work with this deed has dedicated the work to the
+public domain by waiving all of his or her rights to the work worldwide under
+copyright law, including all related and neighboring rights, to the extent
+allowed by law.
+
+You can copy, modify, distribute and perform the work, even for commercial
+purposes, all without asking permission.
+
+AFFIRMER OFFERS THE WORK AS-IS AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+ANY KIND CONCERNING THE WORK, EXPRESS, IMPLIED, STATUTORY OR OTHERWISE,
+INCLUDING WITHOUT LIMITATION WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, NON INFRINGEMENT, OR THE ABSENCE OF LATENT OR OTHER
+DEFECTS, ACCURACY, OR THE PRESENT OR ABSENCE OF ERRORS, WHETHER OR NOT
+DISCOVERABLE, ALL TO THE GREATEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW.
+
+For more information, please see
+<http://creativecommons.org/publicdomain/zero/1.0/>
+'''
+
+import os
 from ansible.module_utils.basic import *
 
 
 def purge_conflicts(conflicted_files):
-    for f in conflicted_files:
-        pass
+    ''' Delete a file or unlink a symlink conflicting with a package.
 
-    return False, dict(message=None)
+    Args:
+        conflicted_files (list): Path of files or symlinks on the
+            filesystem that conflicts with package files.
+
+    Returns:
+        dict or null: If the file is purged successfully, a None object is
+            returned. If something goes wrong, a dictionary is returned
+            containing the error message.
+    '''
+
+    try:
+        for f in conflicted_files:
+            if os.path.islink(f):
+                os.unlink(f)
+            else:
+                os.remove(f)
+
+    except Exception as e:
+        return dict(message='unable to purge file "{0}"; error: {1}'.format(
+            f, str(e)))
+
+    return None
 
 
 def stow_in_path(module):
+    ''' Verify if stow is installed and accessible (on the $PATH).
+
+    Args:
+        module (AnsibleModule): The Ansible module object.
+
+    Returns:
+        bool: True if stow is installed and accessible. False otherwise.
+    '''
+
     rc, _, _ = module.run_command('which stow', check_rc=False)
     return rc == 0
 
 
 def stow_has_conflicts(module, package, cmd):
-    cmd = '{} --no'.format(cmd)
+    ''' Verify if a package has any conflicting files.
 
+    Args:
+        module (AnsibleModule): The Ansible module object.
+        package (str): The name of the package to be un/re/stowed.
+        cmd (str): The complete stow command, with all flags and arguments, to
+            be executed in dry-run mode (no change is made on the filesystem).
+
+    Returns:
+        dict or null: If no conflict is found, a None object is returned.
+            If a conflict is found, a dictionary is returned.
+
+            Recoverable (i.e., conflicts on pre-existing files and symlinks on
+            the filesystem) conflicts returns a different dict from a
+            non-recoverable one:
+
+                {
+                    'recoverable': True,
+                    'message': '...',
+                    'files': ['/home/user/.bashrc', '/home/user/.config/foo']
+                }
+
+                ---
+
+                {
+                    'recoverable': False,
+                    'message': '...'
+                }
+    '''
+
+    p = module.params
+
+    # Dry-run to check if there's any conflict.
+    cmd = '{} --no'.format(cmd)
     rc, _, stderr = module.run_command(cmd)
 
-    msg = None
+    if rc == 0:
+        return None
+
+    # Return code 2 means that the package points to a path that has a
+    # directory on it. E.g.:
+    #
+    # Package "foo" is meant to be stowed at the home directory at
+    # ".config/foo/bar" (absolute path being "/home/user/.config/foo/bar").
+    #
+    # If "bar" already exists as a directory at "/home/user/.config/foo",
+    # stow can't continue.
+    #
+    # One way of dealing with this situation would be removing the directory.
+    # Another way would be by backuping it. Either way, it's risky to
+    # recursively delete an entire directory or even move it.
+    #
+    # This kind of scenario should be handled manually by the user, hence
+    # the function returns with a non-recoverable flag error.
+    if rc == 2:
+        return dict(recoverable=False, message='')
+    
     conflicts = []
 
-    if stderr:
-        stderr_lines = stderr.split('\n')
+    # Grab the conflicting files path.
+    stderr_lines = stderr.split('\n')
+    for s in stderr_lines:
+        if '* existing target is' in s:
+            c = s.split(':')
+            c = c[-1].strip()
+            c = os.path.join(p['target'], c)
 
-        for s in stderr_lines:
-            if '* existing target is neither' in s:
-                c = s.split(':')
-                c = c[1].strip()
-                c = path.join(module.params['target'], c)
+            conflicts.append(c)
 
-                conflicts.append(c)
+    m = 'unable to stow package "{0}" to "{1}"; conflicted files: {2}'.format(
+        package, p['target'],
+        ', '.join('"{}"'.format(f) for f in conflicts))
 
-    has_conflicts = (rc != 0)
-    if has_conflicts:
-        msg = 'unable to stow package "{0}" to "{1}"; conflicted files: {2}'.format(
-            package,
-            module.params['target'],
-            ', '.join('"{}"'.format(f) for f in conflicts))
-
-    return has_conflicts, dict(conflicts=conflicts, message=msg)
+    return dict(recoverable=True, message=m, files=conflicts)
 
 
 def stow(module, package, state):
+    ''' Perform stow on a package against the filesystem.
+
+    Args:
+        module (AnsibleModule): The Ansible module object.
+        package (str): The name of the package to be un/re/stowed.
+        state (str): The desirable package state within the system.
+
+    Returns:
+        dict: A dictionary that contains an error flag, the returned message
+            and wether something changed or not.
+    '''
+
+    p = module.params
+
     flag = ''
     if state == 'present' or state == 'supress':
         flag = '--stow'
@@ -76,51 +174,60 @@ def stow(module, package, state):
         flag = '--restow'
 
     cmd = 'stow {0} {1} --target={2} --dir={3} --verbose'.format(
-        flag,
-        package,
-        module.params['target'],
-        module.params['dir'])
+        flag, package, p['target'], p['dir'])
 
-    has_conflicts, res = stow_has_conflicts(module, package, cmd)
-    if has_conflicts:
-        if state != 'supress':
-            return True, res
-        
-        err = purge_conflicts(res['conflicts'])
+    conflict = stow_has_conflicts(module, package, cmd)
+    if conflict:
+        if state != 'supress' or not conflict['recoverable']:
+            return dict(error=True, message=conflict['message'])
+             
+        err = purge_conflicts(conflict['files'])
         if err:
-            return True, res
+            return dict(error=True, message=err['message'])
 
-    rc, stdout, stderr = module.run_command(cmd)
+    # When increasing verbosity level with the "--verbose" flag, all output
+    # will be sent to the standard error (stderr).
+    #
+    # Stow is, by itself, an idempotent tool.
+    # If a given package is already stowed, the tool will not perform again.
+    # If a package is succesfully stowed, stow will output what have been done.
+    #
+    # That's why "information on stderr" equals "something has changed"
+    # (supposing execution passed all errors checking).
+    rc, _, se = module.run_command(cmd)
     if rc != 0:
-        msg = 'execution of command "{0}" failed with error code {1}; output: "{2}"'.format(
-            cmd, rc, stderr)
+        m = 'execution of command "{0}" failed with error code {1}; output: "{2}"'.format(
+            cmd, rc, se)
 
-        return True, dict(message=msg)
+        return dict(error=True, message=m)
 
-    return False, dict(changed=(stderr != ''))
+    return dict(error=False, changed=(se != ''))
 
 
 def main():
+    '''The module main routine.'''
+
     module = AnsibleModule(argument_spec={
         'dir':     {'required': True, 'type': 'str'},
         'package': {'required': True, 'type': 'list'},
-        'target':  {'required': False, 'type': 'str', 'default': environ.get('HOME')},
+        'target':  {'required': False, 'type': 'str',
+                    'default': os.environ.get('HOME')},
         'state':   {
             'required': True, 'type': 'str',
             'choices': ['absent', 'present', 'latest', 'supress']
         },
     })
 
+    p = module.params
+
     if not stow_in_path(module):
         module.fail_json(msg='unable to find stow')
 
     has_changed = False
-    state = module.params['state']
 
-    packages = list(module.params['package'])
-    for package in packages:
-        err, ret = stow(module, package, state)
-        if err:
+    for package in list(p['package']):
+        ret = stow(module, package, p['state'])
+        if ret['error']:
             module.fail_json(msg=ret['message'])
 
         has_changed = has_changed or ret['changed']
