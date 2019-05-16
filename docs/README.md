@@ -127,6 +127,15 @@ $ (sudo) mv stow /usr/share/ansible
     package: vim
     dir: /media/user/dots
 
+# loop through list of packages
+- stow:
+    state: latest
+    package: '{{ item }}'
+    dir: /media/user/dots
+  with_items:
+    - zsh
+    - tmux
+    - i3
 ```
 
 ### Caveats
