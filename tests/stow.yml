@@ -3,7 +3,7 @@
 - name: ansible-stow test
   tasks:
     - name: '[{{ state }}] stow package "foo"'
-        stow:
-          state: '{{ state }}'
-          package: foo
-          dir: '$HOME/package'
+      stow:
+        state: '{{ state }}'
+        package: foo
+        dir: '$HOME/package'
