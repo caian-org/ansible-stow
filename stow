@@ -31,7 +31,7 @@ from ansible.module_utils.basic import *
 
 
 def purge_conflicts(conflicted_files):
-    ''' Delete a file or unlink a symlink conflicting with a package.
+    """Delete a file or unlink a symlink conflicting with a package.
 
     Args:
         conflicted_files (list): Path of files or symlinks on the
@@ -41,7 +41,7 @@ def purge_conflicts(conflicted_files):
         dict or null: If the file is purged successfully, a None object is
             returned. If something goes wrong, a dictionary is returned
             containing the error message.
-    '''
+    """
 
     try:
         for f in conflicted_files:
@@ -51,28 +51,27 @@ def purge_conflicts(conflicted_files):
                 os.remove(f)
 
     except Exception as e:
-        return dict(message='unable to purge file "{0}"; error: {1}'.format(
-            f, str(e)))
+        return dict(message='unable to purge file "{0}"; error: {1}'.format(f, str(e)))
 
     return None
 
 
 def stow_in_path(module):
-    ''' Verify if stow is installed and accessible (on the $PATH).
+    """Verify if stow is installed and accessible (on the $PATH).
 
     Args:
         module (AnsibleModule): The Ansible module object.
 
     Returns:
         bool: True if stow is installed and accessible. False otherwise.
-    '''
+    """
 
     rc, _, _ = module.run_command('which stow', check_rc=False)
     return rc == 0
 
 
 def stow_has_conflicts(module, package, cmd):
-    ''' Verify if a package has any conflicting files.
+    """Verify if a package has any conflicting files.
 
     Args:
         module (AnsibleModule): The Ansible module object.
@@ -100,7 +99,7 @@ def stow_has_conflicts(module, package, cmd):
                     'recoverable': False,
                     'message': '...'
                 }
-    '''
+    """
 
     p = module.params
 
@@ -128,7 +127,7 @@ def stow_has_conflicts(module, package, cmd):
     # the function returns with a non-recoverable flag error.
     if rc == 2:
         return dict(recoverable=False, message='')
-    
+
     conflicts = []
 
     # Grab the conflicting files path.
@@ -142,14 +141,14 @@ def stow_has_conflicts(module, package, cmd):
             conflicts.append(c)
 
     m = 'unable to stow package "{0}" to "{1}"; conflicted files: {2}'.format(
-        package, p['target'],
-        ', '.join('"{}"'.format(f) for f in conflicts))
+        package, p['target'], ', '.join('"{}"'.format(f) for f in conflicts)
+    )
 
     return dict(recoverable=True, message=m, files=conflicts)
 
 
 def stow(module, package, state):
-    ''' Perform stow on a package against the filesystem.
+    """Perform stow on a package against the filesystem.
 
     Args:
         module (AnsibleModule): The Ansible module object.
@@ -159,7 +158,7 @@ def stow(module, package, state):
     Returns:
         dict: A dictionary that contains an error flag, the returned message
             and wether something changed or not.
-    '''
+    """
 
     p = module.params
 
@@ -174,13 +173,14 @@ def stow(module, package, state):
         flag = '--restow'
 
     cmd = 'stow {0} {1} --target={2} --dir={3} --verbose'.format(
-        flag, package, p['target'], p['dir'])
+        flag, package, p['target'], p['dir']
+    )
 
     conflict = stow_has_conflicts(module, package, cmd)
     if conflict:
         if state != 'supress' or not conflict['recoverable']:
             return dict(error=True, message=conflict['message'])
-             
+
         err = purge_conflicts(conflict['files'])
         if err:
             return dict(error=True, message=err['message'])
@@ -197,7 +197,8 @@ def stow(module, package, state):
     rc, _, se = module.run_command(cmd)
     if rc != 0:
         m = 'execution of command "{0}" failed with error code {1}; output: "{2}"'.format(
-            cmd, rc, se)
+            cmd, rc, se
+        )
 
         return dict(error=True, message=m)
 
@@ -207,16 +208,18 @@ def stow(module, package, state):
 def main():
     '''The module main routine.'''
 
-    module = AnsibleModule(argument_spec={
-        'dir':     {'required': True, 'type': 'str'},
-        'package': {'required': True, 'type': 'list'},
-        'target':  {'required': False, 'type': 'str',
-                    'default': os.environ.get('HOME')},
-        'state':   {
-            'required': True, 'type': 'str',
-            'choices': ['absent', 'present', 'latest', 'supress']
-        },
-    })
+    module = AnsibleModule(
+        argument_spec={
+            'dir': {'required': True, 'type': 'str'},
+            'package': {'required': True, 'type': 'list'},
+            'target': {'required': False, 'type': 'str', 'default': os.environ.get('HOME')},
+            'state': {
+                'required': True,
+                'type': 'str',
+                'choices': ['absent', 'present', 'latest', 'supress'],
+            },
+        }
+    )
 
     p = module.params
 
