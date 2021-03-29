@@ -27,7 +27,7 @@ For more information, please see
 '''
 
 import os
-from ansible.module_utils.basic import *
+from ansible.module_utils.basic import AnsibleModule
 
 
 def purge_conflicts(conflicted_files):
@@ -44,14 +44,14 @@ def purge_conflicts(conflicted_files):
     """
 
     try:
-        for f in conflicted_files:
-            if os.path.islink(f):
-                os.unlink(f)
+        for file in conflicted_files:
+            if os.path.islink(file):
+                os.unlink(file)
             else:
-                os.remove(f)
+                os.remove(file)
 
-    except Exception as e:
-        return dict(message='unable to purge file "{0}"; error: {1}'.format(f, str(e)))
+    except Exception as err:  # pylint: disable=broad-except
+        return dict(message='unable to purge file "{}"; error: {}'.format(file, str(err)))
 
     return None
 
@@ -66,8 +66,8 @@ def stow_in_path(module):
         bool: True if stow is installed and accessible. False otherwise.
     """
 
-    rc, _, _ = module.run_command('which stow', check_rc=False)
-    return rc == 0
+    rc_, _, _ = module.run_command('which stow', check_rc=False)
+    return rc_ == 0
 
 
 def stow_has_conflicts(module, package, cmd):
@@ -101,13 +101,13 @@ def stow_has_conflicts(module, package, cmd):
                 }
     """
 
-    p = module.params
+    params = module.params
 
     # Dry-run to check if there's any conflict.
     cmd = '{} --no'.format(cmd)
-    rc, _, stderr = module.run_command(cmd)
+    rc_, _, stderr = module.run_command(cmd)
 
-    if rc == 0:
+    if rc_ == 0:
         return None
 
     # Return code 2 means that the package points to a path that has a
@@ -125,26 +125,26 @@ def stow_has_conflicts(module, package, cmd):
     #
     # This kind of scenario should be handled manually by the user, hence
     # the function returns with a non-recoverable flag error.
-    if rc == 2:
+    if rc_ == 2:
         return dict(recoverable=False, message='')
 
     conflicts = []
 
     # Grab the conflicting files path.
     stderr_lines = stderr.split('\n')
-    for s in stderr_lines:
-        if '* existing target is' in s:
-            c = s.split(':')
-            c = c[-1].strip()
-            c = os.path.join(p['target'], c)
+    for sel in stderr_lines:
+        if '* existing target is' in sel:
+            conflict = sel.split(':')
+            conflict = conflict[-1].strip()
+            conflict = os.path.join(params['target'], conflict)
 
-            conflicts.append(c)
+            conflicts.append(conflict)
 
-    m = 'unable to stow package "{0}" to "{1}"; conflicted files: {2}'.format(
-        package, p['target'], ', '.join('"{}"'.format(f) for f in conflicts)
+    msg = 'unable to stow package "{0}" to "{1}"; conflicted files: {2}'.format(
+        package, params['target'], ', '.join('"{}"'.format(f) for f in conflicts)
     )
 
-    return dict(recoverable=True, message=m, files=conflicts)
+    return dict(recoverable=True, message=msg, files=conflicts)
 
 
 def stow(module, package, state):
@@ -160,10 +160,10 @@ def stow(module, package, state):
             and wether something changed or not.
     """
 
-    p = module.params
+    params = module.params
 
     flag = ''
-    if state == 'present' or state == 'supress':
+    if state in ('present', 'supress'):
         flag = '--stow'
 
     elif state == 'absent':
@@ -173,7 +173,7 @@ def stow(module, package, state):
         flag = '--restow'
 
     cmd = 'stow {0} {1} --target={2} --dir={3} --verbose'.format(
-        flag, package, p['target'], p['dir']
+        flag, package, params['target'], params['dir']
     )
 
     conflict = stow_has_conflicts(module, package, cmd)
@@ -194,15 +194,15 @@ def stow(module, package, state):
     #
     # That's why "information on stderr" equals "something has changed"
     # (supposing execution passed all errors checking).
-    rc, _, se = module.run_command(cmd)
-    if rc != 0:
-        m = 'execution of command "{0}" failed with error code {1}; output: "{2}"'.format(
-            cmd, rc, se
+    rc_, _, se_ = module.run_command(cmd)
+    if rc_ != 0:
+        msg = 'execution of command "{0}" failed with error code {1}; output: "{2}"'.format(
+            cmd, rc_, se_
         )
 
-        return dict(error=True, message=m)
+        return dict(error=True, message=msg)
 
-    return dict(error=False, changed=(se != ''))
+    return dict(error=False, changed=(se_ != ''))
 
 
 def main():
@@ -221,15 +221,15 @@ def main():
         }
     )
 
-    p = module.params
+    params = module.params
 
     if not stow_in_path(module):
         module.fail_json(msg='unable to find stow')
 
     has_changed = False
 
-    for package in list(p['package']):
-        ret = stow(module, package, p['state'])
+    for package in list(params['package']):
+        ret = stow(module, package, params['state'])
         if ret['error']:
             module.fail_json(msg=ret['message'])
 
