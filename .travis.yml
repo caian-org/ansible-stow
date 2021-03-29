@@ -17,7 +17,7 @@ matrix:
 
 
 install:
-  - sudo apt-get install -y figlet shellcheck stow
+  - sudo apt-get install -y figlet shellcheck stow ansible
   - pipenv install --dev
 
 script:
