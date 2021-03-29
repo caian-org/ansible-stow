@@ -10,6 +10,7 @@ ansible = "*"
 black = "*"
 pylint = "*"
 jedi = "*"
+dataclasses = "*"
 
 [requires]
 python_version = "3.8"
