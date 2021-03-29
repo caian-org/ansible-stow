@@ -1,13 +1,24 @@
-dist: xenial
 language: python
 
-python: "3.7"
+matrix:
+  include:
+    - python: "3.5"
+    - python: "3.6"
+    - python: "3.7"
+    - python: "3.8"
+    - python: "3.9"
+    - python: "nightly"
+  allow_failures:
+    - python: "nightly"
+
 
 install:
   - sudo apt-get install -y figlet shellcheck stow
-  - pip install ansible
+  - pipenv install --dev
 
 script:
+  - pipenv run check:lint
+  - pipenv run check:style
   - shellcheck tests/test.sh
   - cd tests
   - ./test.sh
