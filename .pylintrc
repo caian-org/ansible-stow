@@ -1,0 +1,14 @@
+[master]
+
+disable=
+    missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring
+
+
+[similarities]
+
+min-similarity-lines=4
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes

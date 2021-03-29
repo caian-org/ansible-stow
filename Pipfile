@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ansible = "*"
+
+[dev-packages]
+black = "*"
+pylint = "*"
+jedi = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+"fix:style" = "black -l 100 -S stow"
+"check:lint" = "pylint --fail-under 9 --rcfile .pylintrc --output-format colorized --verbose stow"
+"check:style" = "black -l 100 -S --check stow"
+
+[pipenv]
+allow_prereleases = true
