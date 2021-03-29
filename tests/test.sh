@@ -3,7 +3,7 @@
 set -e
 
 run_playbook() {
-    ansible-playbook -i hosts stow.yml --extra-vars "state=$1" -vvv
+    ansible-playbook -i hosts stow.yml --extra-vars "state=$1" -v
 }
 
 # create the library directory and copy the module
