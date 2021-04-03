@@ -1,6 +1,6 @@
 # ansible-stow
 
-<img src="logo.png" height="280x" align="right"/>
+<img src="logo.png" height="250x" align="right"/>
 
 An Ansible module that interacts with [GNU Stow][stow] packages.
 
