@@ -1,6 +1,6 @@
 # ansible-stow
 
-<img src="logo.png" height="300px" align="right"/>
+<img src="logo.png" height="280x" align="right"/>
 
 An Ansible module that interacts with [GNU Stow][stow] packages.
 
@@ -8,13 +8,13 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 
 [stow]: https://www.gnu.org/software/stow
 
-[travis-shield]: https://img.shields.io/travis/caian-org/ansible-stow.svg?style=for-the-badge
+[travis-shield]: https://img.shields.io/travis/caian-org/ansible-stow.svg?logo=travis-ci&logoColor=FFF&style=for-the-badge
 [travis-url]: https://travis-ci.org/caian-org/ansible-stow
 
-[lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?style=for-the-badge
+[lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?logo=lgtm&style=for-the-badge
 [lgtm-url]: https://lgtm.com/projects/g/caian-org/ansible-stow/context:python
 
-[tag-shield]: https://img.shields.io/github/tag/caian-org/ansible-stow.svg?style=for-the-badge
+[tag-shield]: https://img.shields.io/github/tag/caian-org/ansible-stow.svg?logo=git&logoColor=FFF&style=for-the-badge
 [tag-url]: https://github.com/caian-org/ansible-stow/releases
 
 
