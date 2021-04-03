@@ -1,10 +1,10 @@
+[![Build Status][travis-shield]][travis-url] [![Code Quality][lgtm-shield]][lgtm-url] [![GitHub tag][tag-shield]][tag-url]
+
 # ansible-stow
 
-<img src="logo.png" height="250x" align="right"/>
+<img src="logo.png" height="300x" align="right"/>
 
 An Ansible module that interacts with [GNU Stow][stow] packages.
-
-[![Build Status][travis-shield]][travis-url] [![Code Quality][lgtm-shield]][lgtm-url] [![GitHub tag][tag-shield]][tag-url]
 
 [stow]: https://www.gnu.org/software/stow
 
