@@ -1,4 +1,6 @@
-[![Build Status][travis-shield]][travis-url] [![Code Quality][lgtm-shield]][lgtm-url] [![GitHub tag][tag-shield]][tag-url]
+[![Build Status][travis-shield]][travis-url]
+[![Code Quality][lgtm-shield]][lgtm-url]
+[![GitHub tag][tag-shield]][tag-url]
 
 # ansible-stow
 
