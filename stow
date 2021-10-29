@@ -51,7 +51,7 @@ def purge_conflicts(conflicted_files):
                 os.remove(file)
 
     except Exception as err:  # pylint: disable=broad-except
-        return dict(message='unable to purge file "{}"; error: {}'.format(file, str(err)))
+        return dict(message=f'unable to purge file "{file}"; error: {str(err)}')
 
     return None
 
@@ -104,7 +104,7 @@ def stow_has_conflicts(module, package, cmd):
     params = module.params
 
     # Dry-run to check if there's any conflict.
-    cmd = '{} --no'.format(cmd)
+    cmd = f'{cmd} --no'
     rc_, _, stderr = module.run_command(cmd)
 
     if rc_ == 0:
@@ -140,9 +140,8 @@ def stow_has_conflicts(module, package, cmd):
 
             conflicts.append(conflict)
 
-    msg = 'unable to stow package "{0}" to "{1}"; conflicted files: {2}'.format(
-        package, params['target'], ', '.join('"{}"'.format(f) for f in conflicts)
-    )
+    conff = ', '.join(f'"{f}"' for f in conflicts)
+    msg = f'unable to stow package "{package}" to "{params["target"]}"; conflicted files: {conff}'
 
     return dict(recoverable=True, message=msg, files=conflicts)
 
@@ -172,9 +171,7 @@ def stow(module, package, state):
     elif state == 'latest':
         flag = '--restow'
 
-    cmd = 'stow {0} {1} --target={2} --dir={3} --verbose'.format(
-        flag, package, params['target'], params['dir']
-    )
+    cmd = f'stow {flag} {package} --target={params["target"]} --dir={params["dir"]} --verbose'
 
     conflict = stow_has_conflicts(module, package, cmd)
     if conflict:
@@ -196,10 +193,7 @@ def stow(module, package, state):
     # (supposing execution passed all errors checking).
     rc_, _, se_ = module.run_command(cmd)
     if rc_ != 0:
-        msg = 'execution of command "{0}" failed with error code {1}; output: "{2}"'.format(
-            cmd, rc_, se_
-        )
-
+        msg = 'execution of command "{cmd}" failed with error code {rc_}; output: "{se_}"'
         return dict(error=True, message=msg)
 
     return dict(error=False, changed=(se_ != ''))
