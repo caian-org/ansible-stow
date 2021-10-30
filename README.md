@@ -1,4 +1,4 @@
-[![Build Status][travis-shield]][travis-url]
+[![Tests][workflows-shield]][workflows-url]
 [![Code Quality][lgtm-shield]][lgtm-url]
 [![GitHub tag][tag-shield]][tag-url]
 
@@ -10,8 +10,8 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 
 [stow]: https://www.gnu.org/software/stow
 
-[travis-shield]: https://img.shields.io/travis/caian-org/ansible-stow.svg?logo=travis-ci&logoColor=FFF&style=flat-square
-[travis-url]: https://travis-ci.org/caian-org/ansible-stow
+[workflows-shield]: https://img.shields.io/github/workflow/status/caian-org/ansible-stow/test?label=tests&logo=github&style=flat-square
+[workflows-url]: https://github.com/caian-org/ansible-stow/actions/workflows/test.yml
 
 [lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?logo=lgtm&style=flat-square
 [lgtm-url]: https://lgtm.com/projects/g/caian-org/ansible-stow/context:python
