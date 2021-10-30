@@ -11,9 +11,7 @@ black = "*"
 pylint = "*"
 jedi = "*"
 dataclasses = "*"
-
-[requires]
-python_version = "3.8"
+typed-ast = "*"
 
 [scripts]
 "fix:style" = "black -l 100 -S stow"
