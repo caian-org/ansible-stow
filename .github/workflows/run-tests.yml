@@ -1,4 +1,4 @@
-name: Run tests
+name: run-tests
 
 on:
   push:
@@ -17,7 +17,7 @@ on:
       - "**.md"
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
