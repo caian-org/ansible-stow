@@ -22,6 +22,7 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 
 ## Table of Contents
 
+- [Compatibility](#compatibility)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -30,6 +31,14 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
   - [Caveats](#caveats)
 - [Acknowledgements](#acknowledgements)
 - [License](#license)
+
+
+## Compatibility
+
+This ansible module is tested against `ansible 2.10.7 | 3.4.0 | 4.10.0 | 5.4.0` and `python >= 3.6, < 4.0`.
+Note that for `ansible >= 4.10.0`, `python >= 3.8` is required.
+
+For `python < 3` (legacy systems that still uses `2.x`), use the [`v0.1.3`](https://github.com/caian-org/ansible-stow/tree/v0.1.3) of this module.
 
 
 ## Dependencies
@@ -46,7 +55,7 @@ Download the module and move it into your global Ansible library or into the
 library directory alongside your top-level playbook. E.g.:
 
 ```sh
-$ wget https://git.io/fjlZ4
+$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/v0.1.4/stow
 $ (sudo) mv stow /usr/share/ansible
 ```
 
