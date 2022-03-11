@@ -1,0 +1,41 @@
+[tool.poetry]
+name        = "ansible-stow"
+version     = "0.1.4"
+description = "Ansible module that interacts with GNU Stow packages"
+authors     = ["Caian Ertl <hi@caian.org>"]
+license     = "CC0-1.0"
+homepage    = "https://github.com/caian-org/yapt"
+repository  = "https://github.com/caian-org/yapt"
+classifiers = [
+    # Trove classifiers
+    # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+
+    "Environment :: Console",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+ansible = "4.10"
+
+[tool.poetry.dev-dependencies]
+bandit     = "1.7.4"
+black      = "22.1.0"
+jedi       = "0.18.1"
+poethepoet = "0.13.1"
+pylint     = "2.12.2"
+
+[tool.poe.tasks]
+"fix:style"      = "black -l 100 -S stow"
+"check:lint"     = "pylint --fail-under 9 --rcfile .pylintrc --output-format colorized --verbose stow"
+"check:style"    = "black -l 100 -S --check stow"
+"check:security" = "bandit -r stow"
+
+[build-system]
+requires      = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
