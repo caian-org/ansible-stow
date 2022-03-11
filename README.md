@@ -11,7 +11,7 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 [stow]: https://www.gnu.org/software/stow
 
 [workflows-shield]: https://img.shields.io/github/workflow/status/caian-org/ansible-stow/run-tests?label=tests&logo=github&style=flat-square
-[workflows-url]: https://github.com/caian-org/ansible-stow/actions/workflows/run-tests.yml
+[workflows-url]: https://github.com/caian-org/ansible-stow/actions/workflows/check-code-and-run-tests.yml
 
 [lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?logo=lgtm&style=flat-square
 [lgtm-url]: https://lgtm.com/projects/g/caian-org/ansible-stow/context:python
@@ -99,7 +99,7 @@ $ (sudo) mv stow /usr/share/ansible
           <li><strong>latest:</strong> first unstow a package, then stow again. Equivalent to <code>stow --restow</code>.</li>
           <li><strong>present:</strong> stow a package. Equivalent to <code>stow --stow</code>.</li>
           <li><strong>supress:</strong> stow a package and overwrite the file if any conflict is found. <strong>THIS CAN LEAD TO DATA LOSS!</strong> Use wisely.</li>
-	      </ul>
+        </ul>
       </td>
     </tr>
   </tbody>
