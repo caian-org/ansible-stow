@@ -1,0 +1,90 @@
+name: tests
+
+on:
+  push:
+    branches: '*'
+    tags: '*'
+    paths-ignore: '**.md'
+
+  pull_request:
+    branches: '*'
+    tags: '*'
+    paths-ignore: '**.md'
+
+jobs:
+  tests:
+    runs-on: ubuntu-18.04
+    continue-on-error: true
+    strategy:
+      matrix:
+        include:
+          # python 3.6
+          - python-version: '3.6'
+            ansible-version: '2.10.7'
+          - python-version: '3.6'
+            ansible-version: '3.4.0'
+          - python-version: '3.6'
+            ansible-version: '4.10.0'
+
+          # python 3.7
+          - python-version: '3.7'
+            ansible-version: '2.10.7'
+          - python-version: '3.7'
+            ansible-version: '3.4.0'
+          - python-version: '3.7'
+            ansible-version: '4.10.0'
+
+          # python 3.8
+          - python-version: '3.8'
+            ansible-version: '2.10.7'
+          - python-version: '3.8'
+            ansible-version: '3.4.0'
+          - python-version: '3.8'
+            ansible-version: '4.10.0'
+          - python-version: '3.8'
+            ansible-version: '5.4.0'
+
+          # python 3.9
+          - python-version: '3.9'
+            ansible-version: '2.10.7'
+          - python-version: '3.9'
+            ansible-version: '3.4.0'
+          - python-version: '3.9'
+            ansible-version: '4.10.0'
+          - python-version: '3.9'
+            ansible-version: '5.4.0'
+
+          # python 3.10
+          - python-version: '3.10'
+            ansible-version: '2.10.7'
+          - python-version: '3.10'
+            ansible-version: '3.4.0'
+          - python-version: '3.10'
+            ansible-version: '4.10.0'
+          - python-version: '3.10'
+            ansible-version: '5.4.0'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install system dependencies
+        run: sudo apt-get install -y figlet stow
+
+      - name: Install ansible ${{ matrix.ansible-version }}
+        run: pip install "ansible==${{ matrix.ansible-version }}"
+
+      - name: Versions
+        run: |
+          ansible --version
+          stow --version
+
+      - name: Run tests
+        run: |
+          cd tests
+          ./test.sh
