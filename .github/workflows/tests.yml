@@ -14,7 +14,6 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-18.04
-    continue-on-error: true
     strategy:
       matrix:
         include:
@@ -77,7 +76,9 @@ jobs:
         run: sudo apt-get install -y figlet stow
 
       - name: Install ansible ${{ matrix.ansible-version }}
-        run: pip install "ansible==${{ matrix.ansible-version }}"
+        run: |
+          sudo apt-get purge --auto-remove ansible
+          pip install "ansible==${{ matrix.ansible-version }}" --force-reinstall
 
       - name: Versions
         run: |
