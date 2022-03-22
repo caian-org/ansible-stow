@@ -20,7 +20,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python  = "^3.7"
 ansible = "4.10"
 
 [tool.poetry.dev-dependencies]
