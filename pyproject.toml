@@ -28,7 +28,7 @@ bandit     = "1.7.4"
 black      = "22.1.0"
 jedi       = "0.18.1"
 poethepoet = "0.13.1"
-pylint     = "2.12.2"
+pylint     = "2.13.4"
 
 [tool.poe.tasks]
 "fix:style"      = "black -l 100 -S stow"
