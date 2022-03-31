@@ -50,6 +50,9 @@ jobs:
       - name: Check security issues
         run: poetry run poe check:security
 
+      - name: Check for dead code
+        run: poetry run poe check:deadcode
+
       - name: Check shell scripts
         run: |
           sudo apt-get install -y shellcheck
