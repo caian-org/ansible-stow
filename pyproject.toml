@@ -29,9 +29,11 @@ black      = "22.3.0"
 jedi       = "0.18.1"
 poethepoet = "0.13.1"
 pylint     = "2.13.4"
+vulture    = "2.3"
 
 [tool.poe.tasks]
 "fix:style"      = "black -l 100 -S stow"
+"check:deadcode" = "vulture stow"
 "check:lint"     = "pylint --fail-under 9 --rcfile .pylintrc --output-format colorized --verbose stow"
 "check:style"    = "black -l 100 -S --check stow"
 "check:security" = "bandit -r stow"
