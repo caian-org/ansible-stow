@@ -164,6 +164,8 @@ $ (sudo) mv stow /usr/share/ansible
 
 Original implementation by [Ric da Silva][rsilva].
 
+[rsilva]: https://github.com/rmhsilva
+
 
 ## License
 
