@@ -162,12 +162,7 @@ $ (sudo) mv stow /usr/share/ansible
 
 ## Acknowledgements
 
-Original implementation:
-
-- [`stow.py`][stowpy] by [Ric da Silva][rsilva]
-
-[stowpy]: https://github.com/rmhsilva/dotfiles/blob/master/library/stow.py
-[rsilva]: https://github.com/rmhsilva
+Original implementation by [Ric da Silva][rsilva].
 
 
 ## License
