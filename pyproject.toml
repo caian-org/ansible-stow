@@ -1,11 +1,11 @@
 [tool.poetry]
 name        = "ansible-stow"
-version     = "0.1.4"
+version     = "1.0.0"
 description = "Ansible module that interacts with GNU Stow packages"
 authors     = ["Caian Ertl <hi@caian.org>"]
 license     = "CC0-1.0"
-homepage    = "https://github.com/caian-org/yapt"
-repository  = "https://github.com/caian-org/yapt"
+homepage    = "https://github.com/caian-org/ansible-stow"
+repository  = "https://github.com/caian-org/ansible-stow"
 classifiers = [
     # Trove classifiers
     # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
