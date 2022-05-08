@@ -10,13 +10,13 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 
 [stow]: https://www.gnu.org/software/stow
 
-[workflows-shield]: https://img.shields.io/github/workflow/status/caian-org/ansible-stow/run-tests?label=tests&logo=github&style=flat-square
+[workflows-shield]: https://img.shields.io/github/workflow/status/caian-org/ansible-stow/run-tests?label=tests&logo=github&style=for-the-badge
 [workflows-url]: https://github.com/caian-org/ansible-stow/actions/workflows/check-code-and-run-tests.yml
 
-[lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?logo=lgtm&style=flat-square
+[lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?logo=lgtm&style=for-the-badge
 [lgtm-url]: https://lgtm.com/projects/g/caian-org/ansible-stow/context:python
 
-[tag-shield]: https://img.shields.io/github/tag/caian-org/ansible-stow.svg?logo=git&logoColor=FFF&style=flat-square
+[tag-shield]: https://img.shields.io/github/tag/caian-org/ansible-stow.svg?logo=git&logoColor=FFF&style=for-the-badge
 [tag-url]: https://github.com/caian-org/ansible-stow/releases
 
 
