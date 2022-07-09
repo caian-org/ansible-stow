@@ -35,8 +35,9 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 
 ## Compatibility
 
-This ansible module is tested against `ansible 2.10.7 | 3.4.0 | 4.10.0 | 5.4.0` and `python >= 3.6, < 4.0`.
-Note that for `ansible >= 4.10.0`, `python >= 3.8` is required.
+This ansible module is tested against `ansible 2.10.7 | 3.4.0 | 4.10.0 | 5.4.0` and `python >= 3.6, < 4.0`. Note that
+for `ansible >= 4.10.0`, `python >= 3.8` is required. For development (linting and other code verification) `python >=
+3.7.2` is required.
 
 For `python < 3` (legacy systems that still uses `2.x`), use the [`v0.1.3`](https://github.com/caian-org/ansible-stow/tree/v0.1.3) of this module.
 
