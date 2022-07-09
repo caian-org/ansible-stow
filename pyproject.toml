@@ -20,16 +20,16 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python  = "^3.7"
+python  = "^3.7.2"
 ansible = "4.10"
 
 [tool.poetry.dev-dependencies]
 bandit     = "1.7.4"
-black      = "22.3.0"
+black      = "22.6.0"
 jedi       = "0.18.1"
-poethepoet = "0.13.1"
-pylint     = "2.13.8"
-vulture    = "2.3"
+poethepoet = "0.15.0"
+pylint     = "2.14.4"
+vulture    = "2.5"
 
 [tool.poe.tasks]
 "fix:style"      = "black -l 100 -S stow"
