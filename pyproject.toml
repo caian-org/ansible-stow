@@ -25,11 +25,11 @@ ansible = "4.10"
 
 [tool.poetry.dev-dependencies]
 bandit     = "1.7.4"
-black      = "22.6.0"
+black      = "22.8.0"
 jedi       = "0.18.1"
-poethepoet = "0.16.0"
-pylint     = "2.14.5"
-vulture    = "2.5"
+poethepoet = "0.16.2"
+pylint     = "2.15.3"
+vulture    = "2.6"
 
 [tool.poe.tasks]
 "fix:style"      = "black -l 100 -S stow"
