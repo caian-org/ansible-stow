@@ -27,7 +27,16 @@ For more information, please see
 '''
 
 import os
+import re
+
 from ansible.module_utils.basic import AnsibleModule
+
+
+unlink_re = re.compile('^UNLINK: (?P<link_path>.+)$')
+
+link_re = re.compile(
+    '^LINK: (?P<file_path>.+) => (?P<link_path>.+)(?P<reverts> \(reverts previous action\))?$'
+)
 
 
 def purge_conflicts(conflicted_files):
@@ -131,8 +140,7 @@ def stow_has_conflicts(module, package, cmd):
     conflicts = []
 
     # Grab the conflicting files path.
-    stderr_lines = stderr.split('\n')
-    for sel in stderr_lines:
+    for sel in stderr.split('\n'):
         if '* existing target is' in sel:
             conflict = sel.split(':')
             conflict = conflict[-1].strip()
@@ -144,6 +152,27 @@ def stow_has_conflicts(module, package, cmd):
     msg = f'unable to stow package "{package}" to "{params["target"]}"; conflicted files: {conff}'
 
     return dict(recoverable=True, message=msg, files=conflicts)
+
+
+def has_stow_changed_links(stow_output):
+    if stow_output.strip() == '':
+        return 0
+
+    n_linked = set()
+    n_unlinked = set()
+
+    for sel in stow_output.split('\n'):
+
+        link_match = link_re.match(sel)
+        if link_match:
+            n_linked.add(link_match.group('file_path'))
+            continue
+
+        unlink_match = unlink_re.match(sel)
+        if unlink_match:
+            n_unlinked.add(unlink_match.group('link_path'))
+
+    return n_linked != n_unlinked
 
 
 def stow(module, package, state):
@@ -193,10 +222,10 @@ def stow(module, package, state):
     # (supposing execution passed all errors checking).
     rc_, _, se_ = module.run_command(cmd)
     if rc_ != 0:
-        msg = 'execution of command "{cmd}" failed with error code {rc_}; output: "{se_}"'
+        msg = f'execution of command "{cmd}" failed with error code {rc_}; output: "{se_}"'
         return dict(error=True, message=msg)
 
-    return dict(error=False, changed=(se_ != ''))
+    return dict(error=False, changed=has_stow_changed_links(se_))
 
 
 def main():
@@ -204,9 +233,19 @@ def main():
 
     module = AnsibleModule(
         argument_spec={
-            'dir': {'required': True, 'type': 'str'},
-            'package': {'required': True, 'type': 'list'},
-            'target': {'required': False, 'type': 'str', 'default': os.environ.get('HOME')},
+            'dir': {
+                'required': True,
+                'type': 'str',
+            },
+            'package': {
+                'required': True,
+                'type': 'list',
+            },
+            'target': {
+                'required': False,
+                'type': 'str',
+                'default': os.environ.get('HOME'),
+            },
             'state': {
                 'required': True,
                 'type': 'str',
