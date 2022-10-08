@@ -34,6 +34,9 @@ test -h "$HOME/.config/foo" && exit 1
 figlet "state: latest"
 run_playbook "present"
 run_playbook "latest"
+run_playbook "latest"
+run_playbook "latest"
+run_playbook "latest"
 run_playbook "absent"
 
 # create a file that should conflict with the package
