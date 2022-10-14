@@ -32,7 +32,7 @@ jobs:
 
       - name: Cache venv
         id: code-check-cache
-        uses: actions/cache@v3.0.9
+        uses: actions/cache@v3.0.11
         with:
           path: .venv
           key: code-check-python-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
