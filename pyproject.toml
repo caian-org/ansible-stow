@@ -29,7 +29,7 @@ black      = "22.8.0"
 jedi       = "0.18.1"
 poethepoet = "0.16.2"
 pylint     = "2.15.3"
-vulture    = "2.6"
+vulture    = "2.7"
 
 [tool.poe.tasks]
 "fix:style"      = "black -l 100 -S stow"
