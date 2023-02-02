@@ -28,7 +28,7 @@ bandit     = "1.7.4"
 black      = "22.8.0"
 jedi       = "0.18.1"
 poethepoet = "0.16.2"
-pylint     = "2.15.3"
+pylint     = "2.16.0"
 vulture    = "2.6"
 
 [tool.poe.tasks]
