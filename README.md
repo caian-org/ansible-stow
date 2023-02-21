@@ -56,7 +56,7 @@ Download the module and move it into your global Ansible library or into the
 library directory alongside your top-level playbook. E.g.:
 
 ```sh
-$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/v0.1.4/stow
+$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/v1.1.1/stow
 $ (sudo) mv stow /usr/share/ansible
 ```
 
