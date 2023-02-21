@@ -32,10 +32,10 @@ pylint     = "2.16.2"
 vulture    = "2.7"
 
 [tool.poe.tasks]
-"fix:style"      = "black -l 100 -S stow"
+"fix:style"      = "black -l 120 -S stow"
 "check:deadcode" = "vulture stow"
 "check:lint"     = "pylint --fail-under 9 --rcfile .pylintrc --output-format colorized --verbose stow"
-"check:style"    = "black -l 100 -S --check stow"
+"check:style"    = "black -l 120 -S --check stow"
 "check:security" = "bandit -r stow"
 
 [build-system]
