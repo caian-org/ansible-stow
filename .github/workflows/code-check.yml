@@ -2,18 +2,24 @@ name: code-check
 
 on:
   push:
-    branches: '*'
-    tags: '*'
-    paths-ignore: '**.md'
+    branches: 
+      - '*'
+    tags: 
+      - '*'
+    paths-ignore: 
+      - '**.md'
 
   pull_request:
-    branches: '*'
-    tags: '*'
-    paths-ignore: '**.md'
+    branches: 
+      - '*'
+    tags: 
+      - '*'
+    paths-ignore: 
+      - '**.md'
 
 jobs:
   code-check:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
@@ -22,7 +28,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.10
 
       - name: Install poetry
         uses: snok/install-poetry@v1.3.3
