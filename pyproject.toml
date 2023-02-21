@@ -1,6 +1,6 @@
 [tool.poetry]
 name        = "ansible-stow"
-version     = "1.0.0"
+version     = "1.1.1"
 description = "Ansible module that interacts with GNU Stow packages"
 authors     = ["Caian Ertl <hi@caian.org>"]
 license     = "CC0-1.0"
@@ -16,6 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication"
 ]
 
@@ -25,11 +26,10 @@ ansible = "4.10"
 
 [tool.poetry.dev-dependencies]
 bandit     = "1.7.4"
-black      = "22.8.0"
-jedi       = "0.18.1"
-poethepoet = "0.16.2"
-pylint     = "2.15.3"
-vulture    = "2.6"
+black      = "22.12.0"
+poethepoet = "0.18.1"
+pylint     = "2.16.2"
+vulture    = "2.7"
 
 [tool.poe.tasks]
 "fix:style"      = "black -l 100 -S stow"
