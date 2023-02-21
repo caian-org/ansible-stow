@@ -1,5 +1,4 @@
 [![Tests][workflows-shield]][workflows-url]
-[![Code Quality][lgtm-shield]][lgtm-url]
 [![GitHub tag][tag-shield]][tag-url]
 
 # ansible-stow
@@ -10,11 +9,8 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 
 [stow]: https://www.gnu.org/software/stow
 
-[workflows-shield]: https://img.shields.io/github/workflow/status/caian-org/ansible-stow/run-tests?label=tests&logo=github&style=for-the-badge
-[workflows-url]: https://github.com/caian-org/ansible-stow/actions/workflows/check-code-and-run-tests.yml
-
-[lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?logo=lgtm&style=for-the-badge
-[lgtm-url]: https://lgtm.com/projects/g/caian-org/ansible-stow/context:python
+[workflows-shield]: https://img.shields.io/github/actions/workflow/status/caian-org/ansible-stow/tests.yml?branch=master&label=tests&logo=github&style=for-the-badge
+[workflows-url]: https://github.com/caian-org/ansible-stow/actions/workflows/tests.yml
 
 [tag-shield]: https://img.shields.io/github/tag/caian-org/ansible-stow.svg?logo=git&logoColor=FFF&style=for-the-badge
 [tag-url]: https://github.com/caian-org/ansible-stow/releases
@@ -56,7 +52,7 @@ Download the module and move it into your global Ansible library or into the
 library directory alongside your top-level playbook. E.g.:
 
 ```sh
-$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/v0.1.4/stow
+$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/v1.1.1/stow
 $ (sudo) mv stow /usr/share/ansible
 ```
 

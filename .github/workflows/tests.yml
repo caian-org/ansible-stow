@@ -2,18 +2,24 @@ name: tests
 
 on:
   push:
-    branches: '*'
-    tags: '*'
-    paths-ignore: '**.md'
+    branches: 
+      - '*'
+    tags: 
+      - '*'
+    paths-ignore: 
+      - '**.md'
 
   pull_request:
-    branches: '*'
-    tags: '*'
-    paths-ignore: '**.md'
+    branches: 
+      - '*'
+    tags: 
+      - '*'
+    paths-ignore: 
+      - '**.md'
 
 jobs:
   tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         include:
@@ -61,6 +67,16 @@ jobs:
           - python-version: '3.10'
             ansible-version: '4.10.0'
           - python-version: '3.10'
+            ansible-version: '5.4.0'
+  
+          # python 3.11
+          - python-version: '3.11'
+            ansible-version: '2.10.7'
+          - python-version: '3.11'
+            ansible-version: '3.4.0'
+          - python-version: '3.11'
+            ansible-version: '4.10.0'
+          - python-version: '3.11'
             ansible-version: '5.4.0'
 
     steps:

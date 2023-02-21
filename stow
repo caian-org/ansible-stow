@@ -51,7 +51,7 @@ def purge_conflicts(conflicted_files):
                 os.remove(file)
 
     except Exception as err:  # pylint: disable=broad-except
-        return dict(message=f'unable to purge file "{file}"; error: {str(err)}')
+        return {'message': f'unable to purge file "{file}"; error: {str(err)}'}
 
     return None
 
@@ -126,7 +126,7 @@ def stow_has_conflicts(module, package, cmd):
     # This kind of scenario should be handled manually by the user, hence
     # the function returns with a non-recoverable flag error.
     if rc_ == 2:
-        return dict(recoverable=False, message='')
+        return {'recoverable': False, 'message': ''}
 
     conflicts = []
 
@@ -143,7 +143,7 @@ def stow_has_conflicts(module, package, cmd):
     conff = ', '.join(f'"{f}"' for f in conflicts)
     msg = f'unable to stow package "{package}" to "{params["target"]}"; conflicted files: {conff}'
 
-    return dict(recoverable=True, message=msg, files=conflicts)
+    return {'recoverable': True, 'message': msg, 'files': conflicts}
 
 
 def stow(module, package, state):
@@ -176,11 +176,11 @@ def stow(module, package, state):
     conflict = stow_has_conflicts(module, package, cmd)
     if conflict:
         if state != 'supress' or not conflict['recoverable']:
-            return dict(error=True, message=conflict['message'])
+            return {'error': True, 'message': conflict['message']}
 
         err = purge_conflicts(conflict['files'])
         if err:
-            return dict(error=True, message=err['message'])
+            return {'error': True, 'message': err['message']}
 
     # When increasing verbosity level with the "--verbose" flag, all output
     # will be sent to the standard error (stderr).
@@ -194,9 +194,9 @@ def stow(module, package, state):
     rc_, _, se_ = module.run_command(cmd)
     if rc_ != 0:
         msg = 'execution of command "{cmd}" failed with error code {rc_}; output: "{se_}"'
-        return dict(error=True, message=msg)
+        return {'error': True, 'message': msg}
 
-    return dict(error=False, changed=(se_ != ''))
+    return {'error': False, 'changed': se_ != ''}
 
 
 def main():
