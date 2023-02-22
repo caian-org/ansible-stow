@@ -1,6 +1,6 @@
 [tool.poetry]
 name        = "ansible-stow"
-version     = "1.1.1"
+version     = "1.1.2"
 description = "Ansible module that interacts with GNU Stow packages"
 authors     = ["Caian Ertl <hi@caian.org>"]
 license     = "CC0-1.0"
