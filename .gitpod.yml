@@ -1,0 +1,34 @@
+---
+# See: <https://www.gitpod.io/docs/configure/workspaces>
+
+
+image: caian/gitpod-dev-workspace:latest
+
+
+tasks:
+  - name: Local env
+    init: poetry install
+
+
+vscode:
+  extensions:
+    - aaron-bond.better-comments
+    - batisteo.vscode-django
+    - christian-kohler.path-intellisense
+    - donjayamanne.python-environment-manager
+    - donjayamanne.python-extension-pack
+    - eamodio.gitlens
+    - editorconfig.editorconfig
+    - exiasr.hadolint
+    - kevinrose.vsc-python-indent
+    - ms-azuretools.vscode-docker
+    - ms-python.isort
+    - ms-python.python
+    - ms-toolsai.jupyter
+    - ms-toolsai.jupyter-keymap
+    - ms-toolsai.vscode-jupyter-cell-tags
+    - ms-toolsai.vscode-jupyter-slideshow
+    - njpwerner.autodocstring
+    - redhat.vscode-yaml
+    - tamasfe.even-better-toml
+    - wholroyd.jinja
