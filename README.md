@@ -3,7 +3,7 @@
 
 # ansible-stow
 
-<img src="logo.png" height="300x" align="right"/>
+<img src="logo.svg" height="270px" align="right"/>
 
 An Ansible module that interacts with [GNU Stow][stow] packages.
 
