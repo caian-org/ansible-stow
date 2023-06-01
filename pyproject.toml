@@ -28,7 +28,7 @@ ansible = "4.10"
 bandit     = "1.7.4"
 black      = "23.1.0"
 poethepoet = "0.18.1"
-pylint     = "2.16.2"
+pylint     = "2.17.4"
 vulture    = "2.7"
 
 [tool.poe.tasks]
