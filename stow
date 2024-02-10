@@ -193,7 +193,7 @@ def stow(module, package, state):
     # (supposing execution passed all errors checking).
     rc_, _, se_ = module.run_command(cmd)
     if rc_ != 0:
-        msg = 'execution of command "{cmd}" failed with error code {rc_}; output: "{se_}"'
+        msg = f'execution of command "{cmd}" failed with error code {rc_}; output: "{se_}"'
         return {'error': True, 'message': msg}
 
     return {'error': False, 'changed': se_ != ''}
