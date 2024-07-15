@@ -2,10 +2,10 @@
 name        = "ansible-stow"
 version     = "1.2.0"
 description = "Ansible module that interacts with GNU Stow packages"
-authors = ["Caian Ertl <hi@caian.org>"]
-license = "CC0-1.0"
-homepage = "https://github.com/caian-org/ansible-stow"
-repository = "https://github.com/caian-org/ansible-stow"
+authors     = ["Caian Ertl <hi@caian.org>"]
+license     = "CC0-1.0"
+homepage    = "https://github.com/caian-org/ansible-stow"
+repository  = "https://github.com/caian-org/ansible-stow"
 classifiers = [
     # Trove classifiers
     # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -22,23 +22,23 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python  = "^3.10"
 ansible = "9.7.0"
 
 [tool.poetry.dev-dependencies]
-bandit = "1.7.9"
-black = "24.4.2"
+bandit     = "1.7.9"
+black      = "24.4.2"
 poethepoet = "0.27.0"
-pylint = "3.2.5"
-vulture = "2.11"
+pylint     = "3.2.5"
+vulture    = "2.11"
 
 [tool.poe.tasks]
-"fix:style" = "black -l 120 -S stow"
+"fix:style"      = "black -l 120 -S stow"
 "check:deadcode" = "vulture stow"
-"check:lint" = "pylint --fail-under 9 --rcfile .pylintrc --output-format colorized --verbose stow"
-"check:style" = "black -l 120 -S --check stow"
+"check:lint"     = "pylint --fail-under 9 --rcfile .pylintrc --output-format colorized --verbose stow"
+"check:style"    = "black -l 120 -S --check stow"
 "check:security" = "bandit -r stow"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires      = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
