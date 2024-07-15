@@ -2,24 +2,22 @@ name: tests
 
 on:
   push:
-    branches: 
+    branches:
       - '*'
-    tags: 
+    tags:
       - '*'
-    paths-ignore: 
+    paths-ignore:
       - '**.md'
 
   pull_request:
-    branches: 
+    branches:
       - '*'
-    tags: 
-      - '*'
-    paths-ignore: 
+    paths-ignore:
       - '**.md'
 
 jobs:
   tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         include:
@@ -41,43 +39,53 @@ jobs:
 
           # python 3.8
           - python-version: '3.8'
-            ansible-version: '2.10.7'
-          - python-version: '3.8'
             ansible-version: '3.4.0'
           - python-version: '3.8'
             ansible-version: '4.10.0'
           - python-version: '3.8'
             ansible-version: '5.4.0'
+          - python-version: '3.8'
+            ansible-version: '6.7.0'
 
           # python 3.9
           - python-version: '3.9'
-            ansible-version: '2.10.7'
-          - python-version: '3.9'
-            ansible-version: '3.4.0'
-          - python-version: '3.9'
             ansible-version: '4.10.0'
           - python-version: '3.9'
             ansible-version: '5.4.0'
+          - python-version: '3.9'
+            ansible-version: '6.7.0'
+          - python-version: '3.9'
+            ansible-version: '7.7.0'
 
           # python 3.10
           - python-version: '3.10'
-            ansible-version: '2.10.7'
+            ansible-version: '6.7.0'
           - python-version: '3.10'
-            ansible-version: '3.4.0'
+            ansible-version: '7.7.0'
           - python-version: '3.10'
-            ansible-version: '4.10.0'
+            ansible-version: '8.7.0'
           - python-version: '3.10'
-            ansible-version: '5.4.0'
-  
+            ansible-version: '9.7.0'
+
           # python 3.11
           - python-version: '3.11'
-            ansible-version: '2.10.7'
+            ansible-version: '6.7.0'
           - python-version: '3.11'
-            ansible-version: '3.4.0'
+            ansible-version: '7.7.0'
           - python-version: '3.11'
-            ansible-version: '4.10.0'
+            ansible-version: '8.7.0'
           - python-version: '3.11'
-            ansible-version: '5.4.0'
+            ansible-version: '9.7.0'
+
+          # python 3.12
+          - python-version: '3.11'
+            ansible-version: '6.7.0'
+          - python-version: '3.11'
+            ansible-version: '7.7.0'
+          - python-version: '3.11'
+            ansible-version: '8.7.0'
+          - python-version: '3.11'
+            ansible-version: '9.7.0'
 
     steps:
       - name: Checkout code
