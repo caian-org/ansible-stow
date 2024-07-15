@@ -78,13 +78,13 @@ jobs:
             ansible-version: '9.7.0'
 
           # python 3.12
-          - python-version: '3.11'
+          - python-version: '3.12'
             ansible-version: '6.7.0'
-          - python-version: '3.11'
+          - python-version: '3.12'
             ansible-version: '7.7.0'
-          - python-version: '3.11'
+          - python-version: '3.12'
             ansible-version: '8.7.0'
-          - python-version: '3.11'
+          - python-version: '3.12'
             ansible-version: '9.7.0'
 
     steps:
