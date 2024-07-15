@@ -3,15 +3,15 @@
 set -e
 
 run_playbook() {
-    ansible-playbook -i hosts stow.yml --extra-vars "state=$1" -v
+    ansible-playbook -i hosts stow.yml --extra-vars "state=$1 fail_if_changed=$2" -v
 }
 
 # create the library directory and copy the module
-mkdir library
+mkdir -p library
 cp ../stow library
 
 # move the package to the home directory
-mv package ~
+cp -r package ~
 
 # run the playbook and stow the package
 figlet "state: present"
@@ -34,6 +34,8 @@ test -h "$HOME/.config/foo" && exit 1
 figlet "state: latest"
 run_playbook "present"
 run_playbook "latest"
+run_playbook "latest" "yes"
+run_playbook "latest" "yes"
 run_playbook "absent"
 
 # create a file that should conflict with the package

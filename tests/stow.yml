@@ -8,3 +8,9 @@
         state: '{{ state }}'
         package: foo
         dir: '$HOME/package'
+      register: stowt
+
+    - name: 'fail if "changed" is greater than 0 when nothing has changed'
+      fail:
+        msg: 'task should not have changed anything'
+      when: stowt is changed and fail_if_changed == 'yes'
