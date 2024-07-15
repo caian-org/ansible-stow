@@ -2,24 +2,22 @@ name: code-check
 
 on:
   push:
-    branches: 
+    branches:
       - '*'
-    tags: 
+    tags:
       - '*'
-    paths-ignore: 
+    paths-ignore:
       - '**.md'
 
   pull_request:
-    branches: 
+    branches:
       - '*'
-    tags: 
-      - '*'
-    paths-ignore: 
+    paths-ignore:
       - '**.md'
 
 jobs:
   code-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
@@ -28,7 +26,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.12'
 
       - name: Install poetry
         uses: snok/install-poetry@v1.3.3
@@ -41,7 +39,7 @@ jobs:
         uses: actions/cache@v3.3.1
         with:
           path: .venv
-          key: code-check-python-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          key: code-check-python-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
         if: steps.code-check-cache.outputs.cache-hit != 'true'
