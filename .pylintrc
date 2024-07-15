@@ -5,6 +5,7 @@ disable=
     missing-class-docstring,
     missing-function-docstring
 
+max-line-length=120
 
 [similarities]
 
