@@ -1,4 +1,4 @@
-name: code-check
+name: Code quality checks
 
 on:
   push:
@@ -21,22 +21,22 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Install poetry
-        uses: snok/install-poetry@v1.3.3
+        uses: snok/install-poetry@v1.3.4
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
       - name: Cache venv
         id: code-check-cache
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v4
         with:
           path: .venv
           key: code-check-python-${{ hashFiles('**/poetry.lock') }}
