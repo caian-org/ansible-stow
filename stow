@@ -60,7 +60,7 @@ def purge_conflicts(conflicted_files):
                 os.remove(file)
 
     except Exception as err:  # pylint: disable=broad-except
-        return dict(message=f'unable to purge file "{file}"; error: {str(err)}')
+        return {'message': f'unable to purge file "{file}"; error: {str(err)}'}
 
     return None
 
@@ -135,7 +135,7 @@ def stow_has_conflicts(module, package, cmd):
     # This kind of scenario should be handled manually by the user, hence
     # the function returns with a non-recoverable flag error.
     if rc_ == 2:
-        return dict(recoverable=False, message='')
+        return {'recoverable': False, 'message': ''}
 
     conflicts = []
 
@@ -151,7 +151,28 @@ def stow_has_conflicts(module, package, cmd):
     conff = ', '.join(f'"{f}"' for f in conflicts)
     msg = f'unable to stow package "{package}" to "{params["target"]}"; conflicted files: {conff}'
 
-    return dict(recoverable=True, message=msg, files=conflicts)
+    return {'recoverable': True, 'message': msg, 'files': conflicts}
+
+
+def has_stow_changed_links(stow_output):
+    if stow_output.strip() == '':
+        return 0
+
+    n_linked = set()
+    n_unlinked = set()
+
+    for sel in stow_output.split('\n'):
+
+        link_match = link_re.match(sel)
+        if link_match:
+            n_linked.add(link_match.group('file_path'))
+            continue
+
+        unlink_match = unlink_re.match(sel)
+        if unlink_match:
+            n_unlinked.add(unlink_match.group('link_path'))
+
+    return n_linked != n_unlinked
 
 
 def has_stow_changed_links(stow_output):
@@ -205,11 +226,11 @@ def stow(module, package, state):
     conflict = stow_has_conflicts(module, package, cmd)
     if conflict:
         if state != 'supress' or not conflict['recoverable']:
-            return dict(error=True, message=conflict['message'])
+            return {'error': True, 'message': conflict['message']}
 
         err = purge_conflicts(conflict['files'])
         if err:
-            return dict(error=True, message=err['message'])
+            return {'error': True, 'message': err['message']}
 
     # When increasing verbosity level with the "--verbose" flag, all output
     # will be sent to the standard error (stderr).

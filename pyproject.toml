@@ -1,11 +1,11 @@
 [tool.poetry]
-name        = "ansible-stow"
-version     = "1.0.0"
+name = "ansible-stow"
+version = "1.1.3"
 description = "Ansible module that interacts with GNU Stow packages"
-authors     = ["Caian Ertl <hi@caian.org>"]
-license     = "CC0-1.0"
-homepage    = "https://github.com/caian-org/ansible-stow"
-repository  = "https://github.com/caian-org/ansible-stow"
+authors = ["Caian Ertl <hi@caian.org>"]
+license = "CC0-1.0"
+homepage = "https://github.com/caian-org/ansible-stow"
+repository = "https://github.com/caian-org/ansible-stow"
 classifiers = [
     # Trove classifiers
     # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -16,28 +16,29 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
-    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication"
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
 ]
 
 [tool.poetry.dependencies]
-python  = "^3.7.2"
-ansible = "4.10"
+python = "^3.10"
+ansible = "9.7.0"
 
 [tool.poetry.dev-dependencies]
-bandit     = "1.7.4"
-black      = "22.10.0"
-jedi       = "0.18.1"
-poethepoet = "0.16.2"
-pylint     = "2.15.3"
-vulture    = "2.6"
+bandit = "1.7.9"
+black = "24.4.2"
+poethepoet = "0.27.0"
+pylint = "3.2.5"
+vulture = "2.11"
 
 [tool.poe.tasks]
-"fix:style"      = "black -l 100 -S stow"
+"fix:style" = "black -l 120 -S stow"
 "check:deadcode" = "vulture stow"
-"check:lint"     = "pylint --fail-under 9 --rcfile .pylintrc --output-format colorized --verbose stow"
-"check:style"    = "black -l 100 -S --check stow"
+"check:lint" = "pylint --fail-under 9 --rcfile .pylintrc --output-format colorized --verbose stow"
+"check:style" = "black -l 120 -S --check stow"
 "check:security" = "bandit -r stow"
 
 [build-system]
-requires      = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

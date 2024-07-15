@@ -1,20 +1,16 @@
 [![Tests][workflows-shield]][workflows-url]
-[![Code Quality][lgtm-shield]][lgtm-url]
 [![GitHub tag][tag-shield]][tag-url]
 
 # ansible-stow
 
-<img src="logo.png" height="300x" align="right"/>
+<img src="logo.svg" height="270px" align="right"/>
 
 An Ansible module that interacts with [GNU Stow][stow] packages.
 
 [stow]: https://www.gnu.org/software/stow
 
-[workflows-shield]: https://img.shields.io/github/workflow/status/caian-org/ansible-stow/run-tests?label=tests&logo=github&style=for-the-badge
-[workflows-url]: https://github.com/caian-org/ansible-stow/actions/workflows/check-code-and-run-tests.yml
-
-[lgtm-shield]: https://img.shields.io/lgtm/grade/python/g/caian-org/ansible-stow.svg?logo=lgtm&style=for-the-badge
-[lgtm-url]: https://lgtm.com/projects/g/caian-org/ansible-stow/context:python
+[workflows-shield]: https://img.shields.io/github/actions/workflow/status/caian-org/ansible-stow/tests.yml?branch=master&label=tests&logo=github&style=for-the-badge
+[workflows-url]: https://github.com/caian-org/ansible-stow/actions/workflows/tests.yml
 
 [tag-shield]: https://img.shields.io/github/tag/caian-org/ansible-stow.svg?logo=git&logoColor=FFF&style=for-the-badge
 [tag-url]: https://github.com/caian-org/ansible-stow/releases
@@ -35,9 +31,9 @@ An Ansible module that interacts with [GNU Stow][stow] packages.
 
 ## Compatibility
 
-This ansible module is tested against `ansible 2.10.7 | 3.4.0 | 4.10.0 | 5.4.0` and `python >= 3.6, < 4.0`. Note that
-for `ansible >= 4.10.0`, `python >= 3.8` is required. For development (linting and other code verification) `python >=
-3.7.2` is required.
+This ansible module is tested against `ansible 2.10.7 | 3.4.0 | 4.10.0 | 5.10.0 | 6.7.0 | 7.7.0 | 8.7.0 | 9.7.0`
+and `python >= 3.6, < 4.0`. Note that for `ansible >= 4.10.0`, `python >= 3.8` is required.
+For development (linting and other code verification) `python >= 3.10` is required.
 
 For `python < 3` (legacy systems that still uses `2.x`), use the [`v0.1.3`](https://github.com/caian-org/ansible-stow/tree/v0.1.3) of this module.
 
@@ -56,7 +52,7 @@ Download the module and move it into your global Ansible library or into the
 library directory alongside your top-level playbook. E.g.:
 
 ```sh
-$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/v0.1.4/stow
+$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/v1.1.3/stow
 $ (sudo) mv stow /usr/share/ansible
 ```
 
