@@ -37,6 +37,14 @@ unlink_re = re.compile('^UNLINK: (?P<link_path>.+)$')
 link_re = re.compile(
     '^LINK: (?P<file_path>.+) => (?P<link_path>.+)(?P<reverts> \(reverts previous action\))?$'
 )
+STOW_CONFLICTS_MESSAGE_REGEX_BY_VERSION = {
+    '2.3.1': r'^\* existing target is neither a link nor a directory: (?P<target_path>.+)$',
+    # pylint: disable-next=line-too-long
+    '2.4.0': r'^\* cannot stow (?P<link_path>.+) over existing target (?P<target_path>.+) since neither a link nor a directory and --adopt not specified$',
+}
+
+
+SUPPORTED_STOW_VERSIONS = list(STOW_CONFLICTS_MESSAGE_REGEX_BY_VERSION.keys())
 
 
 def purge_conflicts(conflicted_files):
@@ -65,7 +73,7 @@ def purge_conflicts(conflicted_files):
     return None
 
 
-def stow_in_path(module):
+def is_stow_in_path(module):
     """Verify if stow is installed and accessible (on the $PATH).
 
     Args:
@@ -79,10 +87,34 @@ def stow_in_path(module):
     return rc_ == 0
 
 
-def stow_has_conflicts(module, package, cmd):
+def get_stow_version(module):
+    """Get the installed stow version.
+
+    Args:
+        module (AnsibleModule): The Ansible module object.
+
+    Returns:
+        str or null: The installed stow version in the format "X.Y.Z". If stow
+            is not installed or the version can't be determined, a None object
+            is returned.
+    """
+
+    rc_, stdout, _ = module.run_command('stow --version')
+    if rc_ != 0:
+        return None
+
+    stow_version = re.compile(r'^stow \(GNU Stow\) version (?P<version>\d+\.\d+\.\d+)$').match(stdout.strip())
+    if not stow_version:
+        return None
+
+    return stow_version.group('version')
+
+
+def stow_has_conflicts(stow_version, module, package, cmd):
     """Verify if a package has any conflicting files.
 
     Args:
+        stow_version (str): The installed stow version.
         module (AnsibleModule): The Ansible module object.
         package (str): The name of the package to be un/re/stowed.
         cmd (str): The complete stow command, with all flags and arguments, to
@@ -137,16 +169,14 @@ def stow_has_conflicts(module, package, cmd):
     if rc_ == 2:
         return {'recoverable': False, 'message': ''}
 
+    conflict_re = re.compile(STOW_CONFLICTS_MESSAGE_REGEX_BY_VERSION[stow_version])
+
     conflicts = []
-
-    # Grab the conflicting files path.
     for sel in stderr.split('\n'):
-        if '* existing target is' in sel:
-            conflict = sel.split(':')
-            conflict = conflict[-1].strip()
-            conflict = os.path.join(params['target'], conflict)
+        conflict_match = conflict_re.match(sel.strip())
 
-            conflicts.append(conflict)
+        if conflict_match:
+            conflicts.append(os.path.join(params['target'], conflict_match.group('target_path')))
 
     conff = ', '.join(f'"{f}"' for f in conflicts)
     msg = f'unable to stow package "{package}" to "{params["target"]}"; conflicted files: {conff}'
@@ -196,10 +226,11 @@ def has_stow_changed_links(stow_output):
     return n_linked != n_unlinked
 
 
-def stow(module, package, state):
+def stow(stow_version, module, package, state):
     """Perform stow on a package against the filesystem.
 
     Args:
+        stow_version (str): The installed stow version.
         module (AnsibleModule): The Ansible module object.
         package (str): The name of the package to be un/re/stowed.
         state (str): The desirable package state within the system.
@@ -223,7 +254,7 @@ def stow(module, package, state):
 
     cmd = f'stow {flag} {package} --target={params["target"]} --dir={params["dir"]} --verbose'
 
-    conflict = stow_has_conflicts(module, package, cmd)
+    conflict = stow_has_conflicts(stow_version, module, package, cmd)
     if conflict:
         if state != 'supress' or not conflict['recoverable']:
             return {'error': True, 'message': conflict['message']}
@@ -277,13 +308,20 @@ def main():
 
     params = module.params
 
-    if not stow_in_path(module):
+    if not is_stow_in_path(module):
         module.fail_json(msg='unable to find stow')
+
+    stow_version = get_stow_version(module)
+    if not stow_version:
+        module.fail_json(msg='unable to determine stow version')
+
+    if stow_version not in SUPPORTED_STOW_VERSIONS:
+        module.fail_json(msg=f'stow version {stow_version} is not supported')
 
     has_changed = False
 
     for package in list(params['package']):
-        ret = stow(module, package, params['state'])
+        ret = stow(stow_version, module, package, params['state'])
         if ret['error']:
             module.fail_json(msg=ret['message'])
 
