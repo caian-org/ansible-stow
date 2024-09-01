@@ -27,7 +27,7 @@ ansible = "9.7.0"
 
 [tool.poetry.dev-dependencies]
 bandit     = "1.7.9"
-black      = "24.4.2"
+black      = "24.8.0"
 poethepoet = "0.27.0"
 pylint     = "3.2.5"
 vulture    = "2.11"
