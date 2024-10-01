@@ -23,7 +23,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python  = "^3.10"
-ansible = "9.7.0"
+ansible = "10.4.0"
 
 [tool.poetry.dev-dependencies]
 bandit     = "1.7.9"
