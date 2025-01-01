@@ -30,7 +30,7 @@ bandit     = "1.7.9"
 black      = "24.4.2"
 poethepoet = "0.27.0"
 pylint     = "3.2.5"
-vulture    = "2.11"
+vulture    = "2.14"
 
 [tool.poe.tasks]
 "fix:style"      = "black -l 120 -S stow"
