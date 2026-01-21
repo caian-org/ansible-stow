@@ -28,34 +28,33 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install poetry
-        uses: snok/install-poetry@v1.4.1
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-      - name: Cache venv
+      - name: Cache uv
         id: code-check-cache
         uses: actions/cache@v4
         with:
-          path: .venv
-          key: code-check-python-${{ hashFiles('**/poetry.lock') }}
+          path: |
+            .venv
+            ~/.cache/uv
+          key: code-check-python-${{ hashFiles('**/uv.lock') }}
 
       - name: Install dependencies
         if: steps.code-check-cache.outputs.cache-hit != 'true'
-        run: poetry install
+        run: uv sync --extra dev --frozen
 
       - name: Check code style
-        run: poetry run poe check:style
+        run: uv run poe check:style
 
       - name: Check lint
-        run: poetry run poe check:lint
+        run: uv run poe check:lint
 
       - name: Check security issues
-        run: poetry run poe check:security
+        run: uv run poe check:security
 
       - name: Check for dead code
-        run: poetry run poe check:deadcode
+        run: uv run poe check:deadcode
 
       - name: Check shell scripts
         run: |
