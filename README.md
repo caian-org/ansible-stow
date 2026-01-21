@@ -91,6 +91,12 @@ $ (sudo) mv stow /usr/share/ansible
       <td>Path of target directory to perform</td>
     </tr>
     <tr>
+      <td><code>folding</code></td>
+      <td><strong>no</strong></td>
+      <td><strong>Default:</strong> True</td>
+      <td>Symlink highest non-existing directory (<code>False</code> to create directories and symlink only the file)</td>
+    </tr>
+    <tr>
       <td><code>dir</code></td>
       <td><strong>yes</strong></td>
       <td></td>

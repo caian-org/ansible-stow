@@ -8,6 +8,7 @@
         state: '{{ state }}'
         package: foo
         dir: '$HOME/package'
+        folding: '{{ folding | default(true) | bool }}'
       register: stowt
 
     - name: 'fail if "changed" is greater than 0 when nothing has changed'
