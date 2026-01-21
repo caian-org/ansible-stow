@@ -8,7 +8,7 @@ run_playbook() {
 
 # create the library directory and copy the module
 mkdir -p library
-cp ../stow library
+cp ../stow.py library
 
 # move the package to the home directory
 cp -r package ~
