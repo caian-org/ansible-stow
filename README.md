@@ -36,8 +36,8 @@ This ansible module is tested against the following versions:
 
  | Program   | Compatible versions                                                       |
  | --------- | ------------------------------------------------------------------------- |
- | `ansible` | `2.10.7`, `3.4.0`, `4.10.0`, `5.4.0`, `6.7.0`, `7.7.0`, `8.7.0`, `9.7.0`   |
- | `python`  | `3.7.x`, `3.8.x`, `3.9.x`, `3.10.x`, `3.11.x`, `3.12.x`                   |
+ | `ansible` | `2.10.7`, `3.4.0`, `4.10.0`, `5.4.0`, `6.7.0`, `7.7.0`, `8.7.0`, `9.13.0`, `10.7.0`, `11.13.0`, `12.3.0`, `13.2.0` |
+ | `python`  | `3.7.x`, `3.8.x`, `3.9.x`, `3.10.x`, `3.11.x`, `3.12.x`, `3.13.x`          |
  | `stow`    | `2.3.1`, `2.4.0`                                                          |
 
 For `python < 3` (legacy systems that still uses `2.x`), use the [`v0.1.3`][ansible-stow-legacy] of this module.
@@ -61,8 +61,8 @@ Download the module and move it into your global Ansible library or into the
 library directory alongside your top-level playbook. E.g.:
 
 ```sh
-$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/v1.2.1/stow
-$ (sudo) mv stow /usr/share/ansible
+$ wget https://raw.githubusercontent.com/caian-org/ansible-stow/v1.2.1/stow.py
+$ (sudo) mv stow.py /usr/share/ansible
 ```
 
 
