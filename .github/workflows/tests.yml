@@ -21,14 +21,6 @@ jobs:
     strategy:
       matrix:
         include:
-          # python 3.6
-          - python-version: '3.6'
-            ansible-version: '2.10.7'
-          - python-version: '3.6'
-            ansible-version: '3.4.0'
-          - python-version: '3.6'
-            ansible-version: '4.10.0'
-
           # python 3.7
           - python-version: '3.7'
             ansible-version: '2.10.7'
