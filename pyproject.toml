@@ -24,7 +24,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "bandit==1.7.9",
+    "bandit==1.9.4",
     "black==24.4.2",
     "poethepoet==0.27.0",
     "pylint==3.2.5",
