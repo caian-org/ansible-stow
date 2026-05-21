@@ -28,7 +28,7 @@ dev = [
     "black==24.4.2",
     "poethepoet==0.27.0",
     "pylint==3.2.5",
-    "vulture==2.11",
+    "vulture==2.16",
 ]
 
 [project.urls]
